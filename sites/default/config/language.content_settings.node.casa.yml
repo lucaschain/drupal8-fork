@@ -1,0 +1,11 @@
+uuid: 874a7855-fa72-43c4-a201-016eeb64ba4b
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.casa
+id: node.casa
+target_entity_type_id: node
+target_bundle: casa
+default_langcode: site_default
+language_alterable: false

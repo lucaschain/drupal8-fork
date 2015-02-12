@@ -1,0 +1,11 @@
+uuid: 843f747e-f095-4d4f-9137-55799febe2af
+name: 'Drupal 8 Chain - Teteu'
+mail: mail@drupal8teteuchain.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: pt-br

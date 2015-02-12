@@ -1,0 +1,27 @@
+uuid: f33b1ca7-5060-4ca6-8306-6b6c2175ae9c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_tags
+field_name: field_tags
+entity_type: node
+type: taxonomy_term_reference
+settings:
+  allowed_values:
+    -
+      vocabulary: tags
+      parent: 0
+  target_type: taxonomy_term
+  options_list_callback: null
+  target_bundle: null
+module: taxonomy
+locked: false
+cardinality: -1
+translatable: true
+indexes:
+  target_id:
+    - target_id
+persist_with_no_fields: false

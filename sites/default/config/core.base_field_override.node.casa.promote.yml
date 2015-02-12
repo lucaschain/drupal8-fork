@@ -1,0 +1,20 @@
+uuid: ec47cd26-92b1-41f7-ab09-9d1924ba05bf
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - node.type.casa
+id: node.casa.promote
+field_name: promote
+entity_type: node
+bundle: casa
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings: {  }
+field_type: boolean

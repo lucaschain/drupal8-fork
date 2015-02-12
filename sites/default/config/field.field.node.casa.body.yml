@@ -1,0 +1,22 @@
+uuid: 68e7a620-bcde-41f7-9900-e254b9b86044
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.casa
+  module:
+    - text
+id: node.casa.body
+field_name: body
+entity_type: node
+bundle: casa
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

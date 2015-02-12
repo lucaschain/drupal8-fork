@@ -1,0 +1,25 @@
+uuid: 37bb7007-def4-43dc-aa01-1e37939aa6a1
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - field.field.node.casa.body
+    - node.type.casa
+  module:
+    - text
+    - user
+id: node.casa.default
+targetEntityType: node
+bundle: casa
+mode: default
+content:
+  links:
+    weight: 100
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

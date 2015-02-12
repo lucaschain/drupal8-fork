@@ -1,0 +1,10 @@
+uuid: c0d64e27-c92f-4043-8561-97818dfd3f2f
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.teaser
+label: Teaser
+targetEntityType: node
+cache: true

@@ -1,0 +1,27 @@
+uuid: f8b5b9ad-3644-4825-b109-09f6609a38bc
+langcode: und
+status: true
+dependencies:
+  module:
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+  user_picture:
+    type: image_image
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    weight: -1
+  language:
+    weight: 0
+  contact:
+    weight: 5
+  timezone:
+    weight: 6
+hidden: {  }

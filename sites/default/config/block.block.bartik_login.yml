@@ -1,0 +1,23 @@
+uuid: 1ff79bb0-f4ff-4ad6-8700-ed1d4c3b64a1
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - bartik
+id: bartik_login
+theme: bartik
+region: sidebar_first
+weight: -4
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'Login do usuário'
+  provider: user
+  label_display: visible
+  cache:
+    max_age: 0
+    contexts: {  }
+visibility: {  }

@@ -1,0 +1,23 @@
+uuid: 458f0862-f374-42fa-8100-ce6814035b60
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - classy
+id: classy_powered
+theme: classy
+region: sidebar_first
+weight: 10
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+  cache:
+    max_age: 0
+    contexts: {  }
+visibility: {  }

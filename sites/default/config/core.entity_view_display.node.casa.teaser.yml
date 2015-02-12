@@ -1,0 +1,27 @@
+uuid: 5e87a3f6-ca3a-42a8-a646-7097a3c81176
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.casa.body
+    - node.type.casa
+  module:
+    - text
+    - user
+id: node.casa.teaser
+targetEntityType: node
+bundle: casa
+mode: teaser
+content:
+  links:
+    weight: 100
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+hidden:
+  langcode: true

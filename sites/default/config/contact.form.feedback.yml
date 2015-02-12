@@ -1,0 +1,10 @@
+uuid: 7f9994ab-fb11-4000-a055-854deb7f5cfc
+langcode: en
+status: true
+dependencies: {  }
+id: feedback
+label: 'Website feedback'
+recipients:
+  - mail@drupal8teteuchain.com
+reply: ''
+weight: 0

@@ -1,0 +1,23 @@
+uuid: 011c324e-50e8-4da4-ad3e-627bb7e9aaa6
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - bartik
+id: bartik_search
+theme: bartik
+region: sidebar_first
+weight: -6
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: Buscar
+  provider: search
+  label_display: visible
+  cache:
+    max_age: 0
+    contexts: {  }
+visibility: {  }

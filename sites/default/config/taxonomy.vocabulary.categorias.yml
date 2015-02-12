@@ -1,0 +1,9 @@
+uuid: 1a36a9b3-6cdd-492d-a04f-79e6e73db613
+langcode: pt-br
+status: true
+dependencies: {  }
+name: Categorias
+vid: categorias
+description: ''
+hierarchy: 0
+weight: 0

@@ -1,0 +1,11 @@
+uuid: adde3043-d14e-470f-8800-b82dd1723738
+langcode: pt-br
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.categorias
+id: taxonomy_term.categorias
+target_entity_type_id: taxonomy_term
+target_bundle: categorias
+default_langcode: site_default
+language_alterable: false
