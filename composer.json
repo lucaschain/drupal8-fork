@@ -5,7 +5,8 @@
   "license": "GPL-2.0+",
   "require": {
     "composer/installers": "^1.0.20",
-    "drupal/core": "~8.0"
+    "drupal/core": "~8.0",
+    "drush/drush": "7.0.*@dev"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

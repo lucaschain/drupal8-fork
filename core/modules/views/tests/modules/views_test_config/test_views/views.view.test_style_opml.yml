@@ -61,7 +61,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -113,7 +113,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -165,7 +165,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -216,7 +216,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -252,6 +252,8 @@ display:
       empty: {  }
       relationships: {  }
       arguments: {  }
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
   feed_1:
     display_plugin: feed
     id: feed_1
@@ -277,6 +279,8 @@ display:
           url_field: ''
       path: test-feed-opml-style
       displays: {  }
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
   page:
     display_plugin: page
     id: page_1
@@ -284,3 +288,5 @@ display:
     position: 1
     display_options:
       path: test-opml-style
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null

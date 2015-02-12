@@ -54,7 +54,7 @@ class FilterEqualityTest extends ViewUnitTestBase {
         'field' => 'name',
         'relationship' => 'none',
         'operator' => '=',
-        'value' => 'Ringo',
+        'value' => array('value' => 'Ringo'),
       ),
     ));
 
@@ -76,8 +76,6 @@ class FilterEqualityTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = 1;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -100,7 +98,7 @@ class FilterEqualityTest extends ViewUnitTestBase {
         'field' => 'name',
         'relationship' => 'none',
         'operator' => '!=',
-        'value' => 'Ringo',
+        'value' => array('value' => 'Ringo'),
       ),
     ));
 
@@ -131,8 +129,6 @@ class FilterEqualityTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = 2;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -157,7 +153,6 @@ class FilterEqualityTest extends ViewUnitTestBase {
     $filters = array(
       'name' => array(
         'id' => 'name',
-        'plugin_id' => 'equality',
         'table' => 'views_test_data',
         'field' => 'name',
         'relationship' => 'none',
@@ -177,12 +172,12 @@ class FilterEqualityTest extends ViewUnitTestBase {
             1 => array(
               'title' => 'Name is equal to Ringo',
               'operator' => '=',
-              'value' => 'Ringo',
+              'value' => array('value' => 'Ringo'),
             ),
             2 => array(
               'title' => 'Name is not equal to Ringo',
               'operator' => '!=',
-              'value' => 'Ringo',
+              'value' => array('value' => 'Ringo'),
             ),
           ),
         ),

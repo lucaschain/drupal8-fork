@@ -8,7 +8,6 @@
 namespace Drupal\system\Tests\File;
 
 use Drupal\Core\Site\Settings;
-use Drupal\Core\File\FileSystem;
 
 /**
  * Tests the unmanaged file copy function.
@@ -30,7 +29,7 @@ class UnmanagedCopyTest extends FileTestBase {
     $this->assertEqual($new_filepath, $desired_filepath, 'Returned expected filepath.');
     $this->assertTrue(file_exists($uri), 'Original file remains.');
     $this->assertTrue(file_exists($new_filepath), 'New file exists.');
-    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FileSystem::CHMOD_FILE));
+    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FILE_CHMOD_FILE));
 
     // Copying with rename.
     $desired_filepath = 'public://' . $this->randomMachineName();
@@ -40,7 +39,7 @@ class UnmanagedCopyTest extends FileTestBase {
     $this->assertNotEqual($newer_filepath, $desired_filepath, 'Returned expected filepath.');
     $this->assertTrue(file_exists($uri), 'Original file remains.');
     $this->assertTrue(file_exists($newer_filepath), 'New file exists.');
-    $this->assertFilePermissions($newer_filepath, Settings::get('file_chmod_file', FileSystem::CHMOD_FILE));
+    $this->assertFilePermissions($newer_filepath, Settings::get('file_chmod_file', FILE_CHMOD_FILE));
 
     // TODO: test copying to a directory (rather than full directory/file path)
     // TODO: test copying normal files using normal paths (rather than only streams)
@@ -70,7 +69,7 @@ class UnmanagedCopyTest extends FileTestBase {
     $this->assertNotEqual($new_filepath, $uri, 'Copied file has a new name.');
     $this->assertTrue(file_exists($uri), 'Original file exists after copying onto itself.');
     $this->assertTrue(file_exists($new_filepath), 'Copied file exists after copying onto itself.');
-    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FileSystem::CHMOD_FILE));
+    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FILE_CHMOD_FILE));
 
     // Copy the file onto itself without renaming fails.
     $new_filepath = file_unmanaged_copy($uri, $uri, FILE_EXISTS_ERROR);
@@ -88,6 +87,6 @@ class UnmanagedCopyTest extends FileTestBase {
     $this->assertNotEqual($new_filepath, $uri, 'Copied file has a new name.');
     $this->assertTrue(file_exists($uri), 'Original file exists after copying onto itself.');
     $this->assertTrue(file_exists($new_filepath), 'Copied file exists after copying onto itself.');
-    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FileSystem::CHMOD_FILE));
+    $this->assertFilePermissions($new_filepath, Settings::get('file_chmod_file', FILE_CHMOD_FILE));
   }
 }

@@ -34,6 +34,8 @@ global-styling:
       css/components/views-ui.css: {}
     layout:
       css/layout/layout.css: {}
+    theme:
+      css/theme/appearance-page.css: {}
 
 node-form:
   version: VERSION

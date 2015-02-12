@@ -9,7 +9,6 @@ namespace Drupal\Core\Utility;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -98,13 +97,6 @@ class Token {
   protected $moduleHandler;
 
   /**
-   * The cache tags invalidator.
-   *
-   * @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface
-   */
-  protected $cacheTagsInvalidator;
-
-  /**
    * Constructs a new class instance.
    *
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
@@ -113,14 +105,11 @@ class Token {
    *   The token cache.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
-   *   The cache tags invalidator.
    */
-  public function __construct(ModuleHandlerInterface $module_handler, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
+  public function __construct(ModuleHandlerInterface $module_handler, CacheBackendInterface $cache, LanguageManagerInterface $language_manager) {
     $this->cache = $cache;
     $this->languageManager = $language_manager;
     $this->moduleHandler = $module_handler;
-    $this->cacheTagsInvalidator = $cache_tags_invalidator;
   }
 
   /**
@@ -358,6 +347,8 @@ class Token {
    */
   public function resetInfo() {
     $this->tokenInfo = NULL;
-    $this->cacheTagsInvalidator->invalidateTags([static::TOKEN_INFO_CACHE_TAG]);
+    Cache::invalidateTags(array(
+      static::TOKEN_INFO_CACHE_TAG => TRUE,
+    ));
   }
 }

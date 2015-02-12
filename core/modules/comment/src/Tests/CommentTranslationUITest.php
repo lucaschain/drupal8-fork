@@ -18,8 +18,6 @@ use Drupal\language\Entity\ConfigurableLanguage;
  */
 class CommentTranslationUITest extends ContentTranslationUITest {
 
-  use CommentTestTrait;
-
   /**
    * The subject of the test comment.
    */
@@ -55,12 +53,12 @@ class CommentTranslationUITest extends ContentTranslationUITest {
     parent::setupBundle();
     $this->drupalCreateContentType(array('type' => $this->nodeBundle, 'name' => $this->nodeBundle));
     // Add a comment field to the article content type.
-    $this->addDefaultCommentField('node', 'article', 'comment_article', CommentItemInterface::OPEN, 'comment_article');
+    $this->container->get('comment.manager')->addDefaultField('node', 'article', 'comment_article', CommentItemInterface::OPEN, 'comment_article');
     // Create a page content type.
     $this->drupalCreateContentType(array('type' => 'page', 'name' => 'page'));
     // Add a comment field to the page content type - this one won't be
     // translatable.
-    $this->addDefaultCommentField('node', 'page', 'comment');
+    $this->container->get('comment.manager')->addDefaultField('node', 'page', 'comment');
     // Mark this bundle as translatable.
     $this->container->get('content_translation.manager')->setEnabled('comment', 'comment_article', TRUE);
   }

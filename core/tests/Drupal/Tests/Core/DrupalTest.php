@@ -292,7 +292,7 @@ class DrupalTest extends UnitTestCase {
   }
 
   /**
-   * Tests the url() method.
+   * Tests the _url() method.
    *
    * @covers ::url
    * @see \Drupal\Core\Routing\UrlGeneratorInterface::generateFromRoute()

@@ -18,8 +18,8 @@ namespace Symfony\Component\Validator\Mapping\Loader;
  *
  * @author Bulat Shakirzyanov <mallluhuct@gmail.com>
  *
- * @see YamlFileLoader
- * @see XmlFileLoader
+ * @see    Symfony\Component\Validator\Mapping\Loader\YamlFileLoader
+ * @see    Symfony\Component\Validator\Mapping\Loader\XmlFileLoader
  */
 abstract class FilesLoader extends LoaderChain
 {

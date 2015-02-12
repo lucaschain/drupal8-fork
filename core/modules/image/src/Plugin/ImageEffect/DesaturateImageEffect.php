@@ -24,6 +24,12 @@ class DesaturateImageEffect extends ImageEffectBase {
   /**
    * {@inheritdoc}
    */
+  public function transformDimensions(array &$dimensions) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function applyEffect(ImageInterface $image) {
     if (!$image->desaturate()) {
       $this->logger->error('Image desaturate failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array('%toolkit' => $image->getToolkitId(), '%path' => $image->getSource(), '%mimetype' => $image->getMimeType(), '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()));

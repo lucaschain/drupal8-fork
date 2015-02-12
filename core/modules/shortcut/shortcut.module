@@ -251,18 +251,16 @@ function shortcut_renderable_links($shortcut_set = NULL) {
     $shortcut_set = shortcut_current_displayed_set();
   }
 
+  /** @var \Drupal\shortcut\ShortcutInterface[] $shortcuts  */
+  $shortcuts = \Drupal::entityManager()->getStorage('shortcut')->loadByProperties(array('shortcut_set' => $shortcut_set->id()));
   $cache_tags = array();
-  foreach ($shortcut_set->getShortcuts() as $shortcut) {
+  foreach ($shortcuts as $shortcut) {
     $shortcut = \Drupal::entityManager()->getTranslationFromContext($shortcut);
-    $url = $shortcut->getUrl();
-    if ($url->access()) {
-      $links[$shortcut->id()] = array(
-        'type' => 'link',
-        'title' => $shortcut->label(),
-        'url' => $shortcut->getUrl(),
-      );
-      $cache_tags = Cache::mergeTags($cache_tags, $shortcut->getCacheTags());
-    }
+    $links[$shortcut->id()] = array(
+      'type' => 'link',
+      'title' => $shortcut->label(),
+    ) + $shortcut->getUrl()->toArray();
+    $cache_tags = Cache::mergeTags($cache_tags, $shortcut->getCacheTags());
   }
 
   if (!empty($links)) {

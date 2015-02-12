@@ -19,8 +19,6 @@ use Drupal\simpletest\WebTestBase;
  */
 abstract class CommentTestBase extends WebTestBase {
 
-  use CommentTestTrait;
-
   /**
    * Modules to install.
    *
@@ -81,7 +79,7 @@ abstract class CommentTestBase extends WebTestBase {
     ));
 
     // Create comment field on article.
-    $this->addDefaultCommentField('node', 'article');
+    $this->container->get('comment.manager')->addDefaultField('node', 'article');
 
     // Create a test node authored by the web user.
     $this->node = $this->drupalCreateNode(array('type' => 'article', 'promote' => 1, 'uid' => $this->webUser->id()));

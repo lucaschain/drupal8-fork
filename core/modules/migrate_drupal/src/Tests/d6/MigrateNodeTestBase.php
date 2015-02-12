@@ -64,7 +64,6 @@ abstract class MigrateNodeTestBase extends MigrateDrupalTestBase {
       'type' => 'story',
       'nid' => 1,
       'vid' => 1,
-      'revision_log' => '',
     ));
     $node->enforceIsNew();
     $node->save();
@@ -73,7 +72,6 @@ abstract class MigrateNodeTestBase extends MigrateDrupalTestBase {
       'type' => 'test_planet',
       'nid' => 3,
       'vid' => 4,
-      'revision_log' => '',
     ));
     $node->enforceIsNew();
     $node->save();

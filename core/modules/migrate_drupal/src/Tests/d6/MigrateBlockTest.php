@@ -49,15 +49,13 @@ class MigrateBlockTest extends MigrateDrupalTestBase {
     }
     $this->prepareMigrations(array(
       'd6_custom_block'  => array(
-        array(array(1), array(1)),
-        array(array(2), array(2)),
+        array(array(10), array(1)),
+        array(array(11), array(2)),
+        array(array(12), array(1)),
+        array(array(13), array(2)),
       ),
       'd6_menu' => array(
         array(array('menu1'), array('menu')),
-      ),
-      'd6_user_role' => array(
-        array(array(2), array('authenticated')),
-        array(array(3), array('migrate_test_role_1')),
       ),
     ));
 
@@ -87,104 +85,74 @@ class MigrateBlockTest extends MigrateDrupalTestBase {
    */
   public function testBlockMigration() {
     $blocks = Block::loadMultiple();
-    $this->assertIdentical(count($blocks), 10);
+    $this->assertEqual(count($blocks), 8);
 
     // User blocks
     $test_block_user = $blocks['user'];
     $this->assertNotNull($test_block_user);
-    $this->assertIdentical('sidebar_first', $test_block_user->getRegion());
-    $this->assertIdentical('bartik', $test_block_user->getTheme());
+    $this->assertEqual('sidebar_first', $test_block_user->getRegion());
+    $this->assertEqual('bartik', $test_block_user->getTheme());
     $visibility = $test_block_user->getVisibility();
-    $this->assertTrue(empty($visibility));
-    $this->assertIdentical(0, $test_block_user->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(0, $test_block_user->getWeight());
 
     $test_block_user_1 = $blocks['user_1'];
     $this->assertNotNull($test_block_user_1);
-    $this->assertIdentical('sidebar_first', $test_block_user_1->getRegion());
-    $this->assertIdentical('bartik', $test_block_user_1->getTheme());
+    $this->assertEqual('sidebar_first', $test_block_user_1->getRegion());
+    $this->assertEqual('bartik', $test_block_user_1->getTheme());
     $visibility = $test_block_user_1->getVisibility();
-    $this->assertTrue(empty($visibility));
-    $this->assertIdentical(0, $test_block_user_1->getWeight());
-
-    $test_block_user_2 = $blocks['user_2'];
-    $this->assertNotNull($test_block_user_2);
-    $this->assertIdentical('sidebar_second', $test_block_user_2->getRegion());
-    $this->assertIdentical('bartik', $test_block_user_2->getTheme());
-    $visibility = $test_block_user_2->getVisibility();
-    $this->assertIdentical($visibility['user_role']['id'], 'user_role');
-    $roles = array();
-    $roles['authenticated'] = 'authenticated';
-    $this->assertIdentical($visibility['user_role']['roles'], $roles);
-    $this->assertFalse($visibility['user_role']['negate']);
-    $this->assertIdentical(-9, $test_block_user_2->getWeight());
-
-    $test_block_user_3 = $blocks['user_3'];
-    $this->assertNotNull($test_block_user_3);
-    $this->assertIdentical('sidebar_second', $test_block_user_3->getRegion());
-    $this->assertIdentical('bartik', $test_block_user_3->getTheme());
-    $visibility = $test_block_user_3->getVisibility();
-    $this->assertIdentical($visibility['user_role']['id'], 'user_role');
-    $roles = array();
-    $roles['migrate_test_role_1'] = 'migrate_test_role_1';
-    $this->assertIdentical($visibility['user_role']['roles'], $roles);
-    $this->assertFalse($visibility['user_role']['negate']);
-    $this->assertIdentical(-6, $test_block_user_3->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(0, $test_block_user_1->getWeight());
 
     // Check system block
     $test_block_system = $blocks['system'];
     $this->assertNotNull($test_block_system);
-    $this->assertIdentical('footer', $test_block_system->getRegion());
-    $this->assertIdentical('bartik', $test_block_system->getTheme());
+    $this->assertEqual('footer', $test_block_system->getRegion());
+    $this->assertEqual('bartik', $test_block_system->getTheme());
     $visibility = $test_block_system->getVisibility();
-    $this->assertIdentical('request_path', $visibility['request_path']['id']);
-    $this->assertIdentical('node/1', $visibility['request_path']['pages']);
-    $this->assertTrue($visibility['request_path']['negate']);
-    $this->assertIdentical(-5, $test_block_system->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(-5, $test_block_system->getWeight());
 
     // Check menu blocks
     $test_block_menu = $blocks['menu'];
     $this->assertNotNull($test_block_menu);
-    $this->assertIdentical('header', $test_block_menu->getRegion());
-    $this->assertIdentical('bartik', $test_block_menu->getTheme());
+    $this->assertEqual('header', $test_block_menu->getRegion());
+    $this->assertEqual('bartik', $test_block_menu->getTheme());
     $visibility = $test_block_menu->getVisibility();
-    $this->assertTrue(empty($visibility));
-    $this->assertIdentical(-5, $test_block_menu->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(-5, $test_block_menu->getWeight());
 
     // Check custom blocks
     $test_block_block = $blocks['block'];
     $this->assertNotNull($test_block_block);
-    $this->assertIdentical('content', $test_block_block->getRegion());
-    $this->assertIdentical('bartik', $test_block_block->getTheme());
+    $this->assertEqual('content', $test_block_block->getRegion());
+    $this->assertEqual('bartik', $test_block_block->getTheme());
     $visibility = $test_block_block->getVisibility();
-    $this->assertIdentical('request_path', $visibility['request_path']['id']);
-    $this->assertIdentical('<front>', $visibility['request_path']['pages']);
-    $this->assertFalse($visibility['request_path']['negate']);
-    $this->assertIdentical(0, $test_block_block->getWeight());
+    $this->assertEqual($visibility['request_path']['pages'], '<front>');
+    $this->assertEqual(0, $test_block_block->getWeight());
 
     $test_block_block_1 = $blocks['block_1'];
     $this->assertNotNull($test_block_block_1);
-    $this->assertIdentical('right', $test_block_block_1->getRegion());
-    $this->assertIdentical('bluemarine', $test_block_block_1->getTheme());
+    $this->assertEqual('right', $test_block_block_1->getRegion());
+    $this->assertEqual('bluemarine', $test_block_block_1->getTheme());
     $visibility = $test_block_block_1->getVisibility();
-    $this->assertIdentical('request_path', $visibility['request_path']['id']);
-    $this->assertIdentical('node', $visibility['request_path']['pages']);
-    $this->assertFalse($visibility['request_path']['negate']);
-    $this->assertIdentical(-4, $test_block_block_1->getWeight());
+    $this->assertEqual($visibility['request_path']['pages'], 'node');
+    $this->assertEqual(-4, $test_block_block_1->getWeight());
 
     $test_block_block_2 = $blocks['block_2'];
     $this->assertNotNull($test_block_block_2);
-    $this->assertIdentical('right', $test_block_block_2->getRegion());
-    $this->assertIdentical('test_theme', $test_block_block_2->getTheme());
+    $this->assertEqual('right', $test_block_block_2->getRegion());
+    $this->assertEqual('test_theme', $test_block_block_2->getTheme());
     $visibility = $test_block_block_2->getVisibility();
-    $this->assertTrue(empty($visibility));
-    $this->assertIdentical(-7, $test_block_block_2->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(-7, $test_block_block_2->getWeight());
 
     $test_block_block_3 = $blocks['block_3'];
     $this->assertNotNull($test_block_block_3);
-    $this->assertIdentical('left', $test_block_block_3->getRegion());
-    $this->assertIdentical('test_theme', $test_block_block_3->getTheme());
+    $this->assertEqual('left', $test_block_block_3->getRegion());
+    $this->assertEqual('test_theme', $test_block_block_3->getTheme());
     $visibility = $test_block_block_3->getVisibility();
-    $this->assertTrue(empty($visibility));
-    $this->assertIdentical(-2, $test_block_block_3->getWeight());
+    $this->assertTrue(empty($visibility['request_path']['pages']));
+    $this->assertEqual(-2, $test_block_block_3->getWeight());
   }
 }

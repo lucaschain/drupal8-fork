@@ -100,7 +100,7 @@ class EntityViewDisplayEditForm extends EntityDisplayFormBase {
     if ($configuration && $configuration['type'] != 'hidden') {
       $plugin = $this->pluginManager->getInstance(array(
         'field_definition' => $field_definition,
-        'view_mode' => $this->entity->getMode(),
+        'view_mode' => $this->entity->mode,
         'configuration' => $configuration
       ));
     }
@@ -119,7 +119,7 @@ class EntityViewDisplayEditForm extends EntityDisplayFormBase {
    * {@inheritdoc}
    */
   protected function getDisplayModes() {
-    return $this->entityManager->getViewModes($this->entity->getTargetEntityTypeId());
+    return $this->entityManager->getViewModes($this->entity->targetEntityType);
   }
 
   /**
@@ -139,10 +139,10 @@ class EntityViewDisplayEditForm extends EntityDisplayFormBase {
    * {@inheritdoc}
    */
   protected function getOverviewUrl($mode) {
-    $entity_type = $this->entityManager->getDefinition($this->entity->getTargetEntityTypeId());
+    $entity_type = $this->entityManager->getDefinition($this->entity->targetEntityType);
     $field_entity_type = $entity_type->getBundleEntityType() != 'bundle'?  $entity_type->getBundleEntityType() : $entity_type->id();
     return Url::fromRoute('entity.entity_view_display.' . $field_entity_type . '.view_mode', [
-      $this->bundleEntityTypeId => $this->entity->getTargetBundle(),
+      $this->bundleEntityTypeId => $this->entity->bundle,
       'view_mode_name' => $mode,
     ]);
   }
@@ -173,7 +173,7 @@ class EntityViewDisplayEditForm extends EntityDisplayFormBase {
       $settings_form[$module] = $this->moduleHandler->invoke($module, 'field_formatter_third_party_settings_form', array(
         $plugin,
         $field_definition,
-        $this->entity->getMode(),
+        $this->entity->mode,
         $form,
         $form_state,
       ));
@@ -188,7 +188,7 @@ class EntityViewDisplayEditForm extends EntityDisplayFormBase {
     $context = array(
       'formatter' => $plugin,
       'field_definition' => $field_definition,
-      'view_mode' => $this->entity->getMode(),
+      'view_mode' => $this->entity->mode,
     );
     $this->moduleHandler->alter('field_formatter_settings_summary', $summary, $context);
   }

@@ -104,7 +104,7 @@ class MailManagerTest extends UnitTestCase {
   /**
    * Tests the getInstance method.
    *
-   * @covers ::getInstance
+   * @covers \Drupal\Core\Mail\MailManager::getInstance
    */
   public function testGetInstance() {
     $interface = array(

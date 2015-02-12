@@ -32,7 +32,7 @@ class Link extends FieldPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Overrides Drupal\views\Plugin\views\field\FieldPluginBase::init().
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
@@ -40,18 +40,12 @@ class Link extends FieldPluginBase {
     $this->additional_fields['uid'] = 'uid';
   }
 
-  /**
-   * {@inheritdoc}
-   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['text'] = array('default' => '');
     return $options;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     $form['text'] = array(
       '#type' => 'textfield',
@@ -68,9 +62,6 @@ class Link extends FieldPluginBase {
     return $account->hasPermission('administer users') || $account->hasPermission('access user profiles');
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function query() {
     $this->ensureMyTable();
     $this->addAdditionalFields();
@@ -99,7 +90,7 @@ class Link extends FieldPluginBase {
     $text = !empty($this->options['text']) ? $this->options['text'] : $this->t('View');
 
     $this->options['alter']['make_link'] = TRUE;
-    $this->options['alter']['url'] = $entity->urlInfo();
+    $this->options['alter']['path'] = $entity->getSystemPath();
 
     return $text;
   }

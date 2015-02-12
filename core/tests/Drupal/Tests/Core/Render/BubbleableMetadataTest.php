@@ -18,10 +18,10 @@ use Drupal\Core\Render\Element;
 class BubbleableMetadataTest extends UnitTestCase {
 
   /**
-   * @covers ::applyTo
-   * @dataProvider providerTestApplyTo
+   * @covers ::apply
+   * @dataProvider providerTestApply
    */
-  public function testApplyTo(BubbleableMetadata $metadata, array $render_array, array $expected) {
+  public function testApply(BubbleableMetadata $metadata, array $render_array, array $expected) {
     $this->assertNull($metadata->applyTo($render_array));
     $this->assertEquals($expected, $render_array);
   }
@@ -31,7 +31,7 @@ class BubbleableMetadataTest extends UnitTestCase {
    *
    * @return array
    */
-  public function providerTestApplyTo() {
+  public function providerTestApply() {
     $data = [];
 
     $empty_metadata = new BubbleableMetadata();

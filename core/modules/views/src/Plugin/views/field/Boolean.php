@@ -33,9 +33,6 @@ use Drupal\views\Plugin\views\display\DisplayPluginBase;
  */
 class Boolean extends FieldPluginBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['type'] = array('default' => 'yes-no');
@@ -47,7 +44,7 @@ class Boolean extends FieldPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Overrides \Drupal\views\Plugin\views\field\FieldPluginBase::init().
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
@@ -65,9 +62,6 @@ class Boolean extends FieldPluginBase {
     $this->formats = array_merge($default_formats, $output_formats, $custom_format);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     foreach ($this->formats as $key => $item) {
       $options[$key] = implode('/', $item);

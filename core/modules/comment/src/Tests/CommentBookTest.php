@@ -17,8 +17,6 @@ use Drupal\simpletest\WebTestBase;
  */
 class CommentBookTest extends WebTestBase {
 
-  use CommentTestTrait;
-
   /**
    * Modules to install.
    *
@@ -30,7 +28,7 @@ class CommentBookTest extends WebTestBase {
     parent::setUp();
 
     // Create comment field on book.
-    $this->addDefaultCommentField('node', 'book');
+    \Drupal::service('comment.manager')->addDefaultField('node', 'book');
   }
 
   /**

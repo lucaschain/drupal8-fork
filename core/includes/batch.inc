@@ -153,12 +153,10 @@ function _batch_progress_page() {
 
   // Merge required query parameters for batch processing into those provided by
   // batch_set() or hook_batch_alter().
-  $query_options = $batch['url']->getOption('query');
-  $query_options['id'] = $batch['id'];
-  $query_options['op'] = $new_op;
-  $batch['url']->setOption('query', $query_options);
+  $batch['url_options']['query']['id'] = $batch['id'];
+  $batch['url_options']['query']['op'] = $new_op;
 
-  $url = $batch['url']->toString();
+  $url = _url($batch['url'], $batch['url_options']);
 
   $build = array(
     '#theme' => 'progress_bar',

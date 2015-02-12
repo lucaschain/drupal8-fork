@@ -7,7 +7,6 @@
 
 namespace Drupal\system\Tests\Common;
 
-use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 
 /**
@@ -23,15 +22,15 @@ class AddFeedTest extends WebTestBase {
   function testBasicFeedAddNoTitle() {
     $path = $this->randomMachineName(12);
     $external_url = 'http://' . $this->randomMachineName(12) . '/' . $this->randomMachineName(12);
-    $fully_qualified_local_url = Url::fromUri('base:' . $this->randomMachineName(12), array('absolute' => TRUE))->toString();
+    $fully_qualified_local_url = _url($this->randomMachineName(12), array('absolute' => TRUE));
 
     $path_for_title = $this->randomMachineName(12);
     $external_for_title = 'http://' . $this->randomMachineName(12) . '/' . $this->randomMachineName(12);
-    $fully_qualified_for_title = Url::fromUri('base:' . $this->randomMachineName(12), array('absolute' => TRUE))->toString();
+    $fully_qualified_for_title = _url($this->randomMachineName(12), array('absolute' => TRUE));
 
     $urls = array(
       'path without title' => array(
-        'url' => Url::fromUri('base:' . $path, array('absolute' => TRUE))->toString(),
+        'url' => _url($path, array('absolute' => TRUE)),
         'title' => '',
       ),
       'external URL without title' => array(
@@ -43,7 +42,7 @@ class AddFeedTest extends WebTestBase {
         'title' => '',
       ),
       'path with title' => array(
-        'url' => Url::fromUri('base:' . $path_for_title, array('absolute' => TRUE))->toString(),
+        'url' => _url($path_for_title, array('absolute' => TRUE)),
         'title' => $this->randomMachineName(12),
       ),
       'external URL with title' => array(

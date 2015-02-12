@@ -16,8 +16,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\image\Plugin\Field\FieldFormatter\ImageFormatterBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\responsive_image\Entity\ResponsiveImageStyle;
-use Drupal\image\Entity\ImageStyle;
 
 /**
  * Plugin for responsive image formatter.
@@ -35,7 +33,7 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
   /**
    * @var EntityStorageInterface
    */
-  protected $responsiveImageStyleStorage;
+  protected $responsiveImageMappingStorage;
 
   /**
    * Constructs a ResponsiveImageFormatter object.
@@ -54,13 +52,13 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Entity\EntityStorageInterface $responsive_image_style_storage
-   *   The responsive image style storage.
+   * @param \Drupal\Core\Entity\EntityStorageInterface $responsive_image_mapping_storage
+   *   The responsive image mapping storage.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityStorageInterface $responsive_image_style_storage) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityStorageInterface $responsive_image_mapping_storage) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
 
-    $this->responsiveImageStyleStorage = $responsive_image_style_storage;
+    $this->responsiveImageMappingStorage = $responsive_image_mapping_storage;
   }
 
   /**
@@ -75,7 +73,7 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
       $configuration['label'],
       $configuration['view_mode'],
       $configuration['third_party_settings'],
-      $container->get('entity.manager')->getStorage('responsive_image_style')
+      $container->get('entity.manager')->getStorage('responsive_image_mapping')
     );
   }
 
@@ -84,7 +82,7 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
    */
   public static function defaultSettings() {
     return array(
-      'responsive_image_style' => '',
+      'responsive_image_mapping' => '',
       'fallback_image_style' => '',
       'image_link' => '',
     ) + parent::defaultSettings();
@@ -95,19 +93,19 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $responsive_image_options = array();
-    $responsive_image_styles = $this->responsiveImageStyleStorage->loadMultiple();
-    if ($responsive_image_styles && !empty($responsive_image_styles)) {
-      foreach ($responsive_image_styles as $machine_name => $responsive_image_style) {
-        if ($responsive_image_style->hasImageStyleMappings()) {
-          $responsive_image_options[$machine_name] = $responsive_image_style->label();
+    $responsive_image_mappings = $this->responsiveImageMappingStorage->loadMultiple();
+    if ($responsive_image_mappings && !empty($responsive_image_mappings)) {
+      foreach ($responsive_image_mappings as $machine_name => $responsive_image_mapping) {
+        if ($responsive_image_mapping->hasMappings()) {
+          $responsive_image_options[$machine_name] = $responsive_image_mapping->label();
         }
       }
     }
 
-    $elements['responsive_image_style'] = array(
-      '#title' => t('Responsive image style'),
+    $elements['responsive_image_mapping'] = array(
+      '#title' => t('Responsive image mapping'),
       '#type' => 'select',
-      '#default_value' => $this->getSetting('responsive_image_style'),
+      '#default_value' => $this->getSetting('responsive_image_mapping'),
       '#required' => TRUE,
       '#options' => $responsive_image_options,
     );
@@ -142,9 +140,9 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
   public function settingsSummary() {
     $summary = array();
 
-    $responsive_image_style = $this->responsiveImageStyleStorage->load($this->getSetting('responsive_image_style'));
-    if ($responsive_image_style) {
-      $summary[] = t('Responsive image style: @responsive_image_style', array('@responsive_image_style' => $responsive_image_style->label()));
+    $responsive_image_mapping = $this->responsiveImageMappingStorage->load($this->getSetting('responsive_image_mapping'));
+    if ($responsive_image_mapping) {
+      $summary[] = t('Responsive image mapping: @responsive_image_mapping', array('@responsive_image_mapping' => $responsive_image_mapping->label()));
 
       $image_styles = image_style_options(FALSE);
       unset($image_styles['']);
@@ -165,7 +163,7 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
       }
     }
     else {
-      $summary[] = t('Select a responsive image style.');
+      $summary[] = t('Select a responsive image mapping.');
     }
 
     return $summary;
@@ -193,47 +191,28 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
     }
 
     // Collect cache tags to be added for each item in the field.
-    $responsive_image_style = $this->responsiveImageStyleStorage->load($this->getSetting('responsive_image_style'));
+    $responsive_image_mapping = $this->responsiveImageMappingStorage->load($this->getSetting('responsive_image_mapping'));
     $image_styles_to_load = array();
-    $cache_tags = [];
-    if ($responsive_image_style) {
-      $cache_tags = Cache::mergeTags($cache_tags, $responsive_image_style->getCacheTags());
-      foreach ($responsive_image_style->getImageStyleMappings() as $image_style_mapping) {
-        // Only image styles of non-empty mappings should be loaded.
-        if (!$responsive_image_style::isEmptyImageStyleMapping($image_style_mapping)) {
-
-          if ($image_style_mapping['image_mapping_type'] == 'image_style') {
-            // This mapping has one image style, add it.
-            $image_styles_to_load[] = $image_style_mapping['image_mapping'];
-          }
-          else {
-            // This mapping has multiple image styles, merge them.
-            $image_style_mapping['image_mapping']['sizes_image_styles'] = array_filter($image_style_mapping['image_mapping']['sizes_image_styles']);
-            $image_styles_to_load = array_merge($image_styles_to_load, $image_style_mapping['image_mapping']['sizes_image_styles']);
-          }
-        }
-      }
-    }
-
-    // If there is a fallback image style, add it to the image styles to load.
     if ($fallback_image_style) {
       $image_styles_to_load[] = $fallback_image_style;
     }
-    else {
-      // The <picture> element uses the first matching breakpoint (see
-      // http://www.w3.org/html/wg/drafts/html/master/embedded-content.html#update-the-source-set
-      // points 2 and 3). Meaning the breakpoints are sorted from large to
-      // small. With mobile-first in mind, the fallback image should be the one
-      // selected for the smallest screen.
-      $fallback_image_style = end($image_styles_to_load);
+    $cache_tags = [];
+    if ($responsive_image_mapping) {
+      $cache_tags = Cache::mergeTags($cache_tags, $responsive_image_mapping->getCacheTags());
+      foreach ($responsive_image_mapping->getMappings() as $mapping) {
+        // First mapping found is used as fallback.
+        if (empty($fallback_image_style)) {
+          $fallback_image_style = $mapping['image_style'];
+        }
+        $image_styles_to_load[] = $mapping['image_style'];
+      }
     }
-    $image_styles = ImageStyle::loadMultiple($image_styles_to_load);
+    $image_styles = entity_load_multiple('image_style', $image_styles_to_load);
     foreach ($image_styles as $image_style) {
       $cache_tags = Cache::mergeTags($cache_tags, $image_style->getCacheTags());
     }
 
     foreach ($items as $delta => $item) {
-      // Link the <picture> element to the original file.
       if (isset($link_file)) {
         $url = Url::fromUri(file_create_url($item->entity->getFileUri()));
       }
@@ -242,15 +221,15 @@ class ResponsiveImageFormatter extends ImageFormatterBase implements ContainerFa
         '#attached' => array(
           'library' => array(
             'core/picturefill',
-          ),
+          )
         ),
         '#item' => $item,
         '#image_style' => $fallback_image_style,
-        '#responsive_image_style_id' => $responsive_image_style ? $responsive_image_style->id() : '',
+        '#mapping_id' => $responsive_image_mapping ? $responsive_image_mapping->id() : '',
         '#url' => $url,
         '#cache' => array(
           'tags' => $cache_tags,
-        ),
+        )
       );
     }
 

@@ -8,6 +8,7 @@
 namespace Drupal\node\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
+use Drupal\Core\Config\Entity\ThirdPartySettingsTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\node\NodeTypeInterface;
 
@@ -41,6 +42,7 @@ use Drupal\node\NodeTypeInterface;
  * )
  */
 class NodeType extends ConfigEntityBundleBase implements NodeTypeInterface {
+  use ThirdPartySettingsTrait;
 
   /**
    * The machine name of this node type.

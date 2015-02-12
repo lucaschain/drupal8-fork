@@ -82,9 +82,7 @@ class MenuCacheTagsTest extends PageCacheTagsTestBase {
       'parent' => '',
       'title' => 'Alpaca',
       'menu_name' => 'llama',
-      'link' => [[
-        'uri' => 'user-path:/',
-      ]],
+      'route_name' => '<front>',
       'bundle' => 'menu_name',
     ));
     $menu_link_2->save();

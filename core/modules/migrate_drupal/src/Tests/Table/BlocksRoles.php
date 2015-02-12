@@ -50,15 +50,7 @@ class BlocksRoles extends Drupal6DumpBase {
       'delta',
       'rid',
     ))
-    ->values(array(
-      'module' => 'user',
-      'delta' => '2',
-      'rid' => '2',
-    ))->values(array(
-      'module' => 'user',
-      'delta' => '3',
-      'rid' => '3',
-    ))->execute();
+    ->execute();
   }
 
 }

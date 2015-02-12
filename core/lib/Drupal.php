@@ -124,16 +124,6 @@ class Drupal {
   }
 
   /**
-   * Returns TRUE if the container has been initialized, FALSE otherwise.
-   *
-   * @return bool
-   */
-  public static function hasContainer() {
-    return static::$container !== NULL;
-  }
-
-
-  /**
    * Retrieves a service from the container.
    *
    * Use this method if the desired service is not one of those with a dedicated
@@ -159,8 +149,7 @@ class Drupal {
    *   TRUE if the specified service exists, FALSE otherwise.
    */
   public static function hasService($id) {
-    // Check hasContainer() first in order to always return a Boolean.
-    return static::hasContainer() && static::getContainer()->has($id);
+    return static::$container && static::$container->has($id);
   }
 
   /**
@@ -179,8 +168,7 @@ class Drupal {
    *   TRUE if there is a currently active request object, FALSE otherwise.
    */
   public static function hasRequest() {
-    // Check hasContainer() first in order to always return a Boolean.
-    return static::hasContainer() && static::getContainer()->has('request_stack') && static::getContainer()->get('request_stack')->getCurrentRequest() !== NULL;
+    return static::$container && static::$container->has('request_stack') && static::$container->get('request_stack')->getCurrentRequest() !== NULL;
   }
 
   /**
@@ -488,7 +476,7 @@ class Drupal {
    * the \Drupal\Core\Url object. See \Drupal\Core\Url::fromRoute() for
    * detailed documentation. For non-routed local URIs relative to
    * the base path (like robots.txt) use Url::fromUri()->toString() with the
-   * base: scheme.
+   * base:// scheme.
    *
    * @param string $route_name
    *   The name of the route.

@@ -7,8 +7,6 @@
 
 namespace Drupal\views\Plugin\views\style;
 
-use Drupal\Core\Url;
-
 /**
  * Default style plugin to render an OPML feed.
  *
@@ -34,7 +32,7 @@ class Opml extends StylePluginBase {
   /**
    * {@inheritdoc}
    */
-  public function attachTo(array &$build, $display_id, Url $feed_url, $title) {
+  public function attachTo(array &$build, $display_id, $path, $title) {
     $display = $this->view->displayHandlers->get($display_id);
     $url_options = array();
     $input = $this->view->getExposedInput();
@@ -43,7 +41,7 @@ class Opml extends StylePluginBase {
     }
     $url_options['absolute'] = TRUE;
 
-    $url = $feed_url->setOptions($url_options)->toString();
+    $url = _url($this->view->getUrl(NULL, $path), $url_options);
     if ($display->hasPath()) {
       if (empty($this->preview)) {
         $build['#attached']['feed'][] = array($url, $title);

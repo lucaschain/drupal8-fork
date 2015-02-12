@@ -25,18 +25,9 @@ class UserEntityCallbacksTest extends WebTestBase {
   public static $modules = array('user');
 
   /**
-   * An authenticated user to use for testing.
-   *
    * @var \Drupal\user\UserInterface
    */
   protected $account;
-
-  /**
-   * An anonymous user to use for testing.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $anonymous;
 
   protected function setUp() {
     parent::setUp();

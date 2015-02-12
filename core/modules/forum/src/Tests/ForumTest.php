@@ -70,12 +70,8 @@ class ForumTest extends WebTestBase {
    */
   protected $nids;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
 
     // Create users.
     $this->admin_user = $this->drupalCreateUser(array(

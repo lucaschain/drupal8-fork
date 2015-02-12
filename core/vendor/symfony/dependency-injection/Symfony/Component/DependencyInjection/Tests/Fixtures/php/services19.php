@@ -17,14 +17,17 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 class ProjectServiceContainer extends Container
 {
     private $parameters;
-    private $targetDirs = array();
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-        parent::__construct();
+        $this->parameters = array(
+
+        );
+
+        parent::__construct(new ParameterBag($this->parameters));
         $this->methodMap = array(
             'service_from_anonymous_factory' => 'getServiceFromAnonymousFactoryService',
             'service_with_method_call_and_factory' => 'getServiceWithMethodCallAndFactoryService',

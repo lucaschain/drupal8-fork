@@ -240,7 +240,7 @@ class Serializer implements SerializerInterface, NormalizerInterface, Denormaliz
      * @param string $format  format name, present to give the option to normalizers to act differently based on formats
      * @param array  $context The context data for this particular normalization
      *
-     * @return array|string|bool|int|float|null
+     * @return array|scalar
      *
      * @throws LogicException
      * @throws UnexpectedValueException

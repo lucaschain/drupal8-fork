@@ -42,4 +42,3 @@ process:
         default_value: true
 destination:
   plugin: entity:filter_format
-  no_stub: true

@@ -1,9 +1,9 @@
 id: bartik_breadcrumbs
 theme: bartik
-weight: 0
-status: true
+weight: -5
+status: false
 langcode: en
-region: breadcrumb
+region: '-1'
 plugin: system_breadcrumb_block
 settings:
   id: system_breadcrumb_block

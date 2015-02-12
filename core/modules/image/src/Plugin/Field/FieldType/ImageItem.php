@@ -406,8 +406,7 @@ class ImageItem extends FileItem {
     );
     // Convert the stored UUID to a FID.
     $fids = [];
-    $uuid = $settings['default_image']['uuid'];
-    if ($uuid && ($file = $this->getEntityManager()->loadEntityByUuid('file', $uuid))) {
+    if ($file = $this->getEntityManager()->loadEntityByUuid('file', $settings['default_image']['uuid'])) {
       $fids[0] = $file->id();
     }
     $element['default_image']['uuid'] = array(

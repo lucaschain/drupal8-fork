@@ -75,7 +75,7 @@ class Fid extends Numeric implements ContainerFactoryPluginInterface {
    */
   public function titleQuery() {
     $fids = $this->entityQuery->get('file')
-      ->condition('fid', $this->value, 'IN')
+      ->condition('fid', $this->value)
       ->execute();
     $controller = $this->entityManager->getStorage('file');
     $files = $controller->loadMultiple($fids);

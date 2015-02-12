@@ -113,7 +113,6 @@ class Numeric extends ArgumentPluginBase {
 
     if (count($this->value) > 1) {
       $operator = empty($this->options['not']) ? 'IN' : 'NOT IN';
-      $placeholder .= '[]';
       $this->query->addWhereExpression(0, "$this->tableAlias.$this->realField $operator($placeholder) $null_check", array($placeholder => $this->value));
     }
     else {

@@ -40,13 +40,6 @@ class EntityListBuilder extends EntityHandlerBase implements EntityListBuilderIn
   protected $entityType;
 
   /**
-   * The number of entities to list per page.
-   *
-   * @var int
-   */
-  protected $limit = 50;
-
-  /**
    * {@inheritdoc}
    */
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
@@ -81,21 +74,7 @@ class EntityListBuilder extends EntityHandlerBase implements EntityListBuilderIn
    * {@inheritdoc}
    */
   public function load() {
-    $entity_ids = $this->getEntityIds();
-    return $this->storage->loadMultiple($entity_ids);
-  }
-
-  /**
-   * Loads entity IDs using a pager.
-   *
-   * @return array
-   *   An array of entity IDs.
-   */
-  protected function getEntityIds() {
-    $query = $this->getStorage()->getQuery();
-    return $query
-      ->pager($this->limit)
-      ->execute();
+    return $this->storage->loadMultiple();
   }
 
   /**
@@ -210,7 +189,7 @@ class EntityListBuilder extends EntityHandlerBase implements EntityListBuilderIn
    * @todo Add a link to add a new item to the #empty text.
    */
   public function render() {
-    $build['table'] = array(
+    $build = array(
       '#type' => 'table',
       '#header' => $this->buildHeader(),
       '#title' => $this->getTitle(),
@@ -219,12 +198,9 @@ class EntityListBuilder extends EntityHandlerBase implements EntityListBuilderIn
     );
     foreach ($this->load() as $entity) {
       if ($row = $this->buildRow($entity)) {
-        $build['table']['#rows'][$entity->id()] = $row;
+        $build['#rows'][$entity->id()] = $row;
       }
     }
-    $build['pager'] = array(
-      '#theme' => 'pager',
-    );
     return $build;
   }
 

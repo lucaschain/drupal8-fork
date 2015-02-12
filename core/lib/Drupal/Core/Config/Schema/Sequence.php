@@ -84,26 +84,9 @@ class Sequence extends ArrayElement implements ListInterface {
   /**
    * {@inheritdoc}
    */
-  public function set($index, $value) {
-    $this->offsetSet($index, $value);
+  public function set($index, $item) {
+    $this->offsetSet($index, $item);
     return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function removeItem($index) {
-    $this->offsetUnset($index);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function appendItem($value = NULL) {
-    $offset = $this->count();
-    $this->offsetSet($offset, $value);
-    return $this->offsetGet($offset);
   }
 
   /**

@@ -144,13 +144,15 @@ class Inline
                 }
 
                 return $repr;
-            case '' == $value:
-                return "''";
             case Escaper::requiresDoubleQuoting($value):
                 return Escaper::escapeWithDoubleQuotes($value);
             case Escaper::requiresSingleQuoting($value):
-            case preg_match(self::getTimestampRegex(), $value):
                 return Escaper::escapeWithSingleQuotes($value);
+            case '' == $value:
+                return "''";
+            case preg_match(self::getTimestampRegex(), $value):
+            case in_array(strtolower($value), array('null', '~', 'true', 'false')):
+                return "'$value'";
             default:
                 return $value;
         }
@@ -192,7 +194,7 @@ class Inline
     /**
      * Parses a scalar to a YAML string.
      *
-     * @param string $scalar
+     * @param scalar $scalar
      * @param string $delimiters
      * @param array  $stringDelimiters
      * @param int    &$i

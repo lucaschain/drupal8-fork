@@ -9,7 +9,6 @@ namespace Drupal\rest\LinkManager;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Utility\UnroutedUrlAssemblerInterface;
 
 class TypeLinkManager implements TypeLinkManagerInterface {
 
@@ -21,23 +20,13 @@ class TypeLinkManager implements TypeLinkManagerInterface {
   protected $cache;
 
   /**
-   * The unrouted URL assembler.
-   *
-   * @var \Drupal\Core\Utility\UnroutedUrlAssemblerInterface
-   */
-  protected $urlAssembler;
-
-  /**
    * Constructor.
    *
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   The injected cache backend for caching type URIs.
-   * @param \Drupal\Core\Utility\UnroutedUrlAssemblerInterface $url_assembler
-   *   The unrouted URL assembler.
    */
-  public function __construct(CacheBackendInterface $cache, UnroutedUrlAssemblerInterface $url_assembler) {
+  public function __construct(CacheBackendInterface $cache) {
     $this->cache = $cache;
-    $this->urlAssembler = $url_assembler;
   }
 
   /**
@@ -53,7 +42,7 @@ class TypeLinkManager implements TypeLinkManagerInterface {
    */
   public function getTypeUri($entity_type, $bundle) {
     // @todo Make the base path configurable.
-    return $this->urlAssembler->assemble("base:rest/type/$entity_type/$bundle", array('absolute' => TRUE));
+    return _url("rest/type/$entity_type/$bundle", array('absolute' => TRUE));
   }
 
   /**

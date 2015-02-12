@@ -12,7 +12,6 @@ use Drupal\Core\Cache\ListCacheBinsPass;
 use Drupal\Core\DependencyInjection\Compiler\BackendCompilerPass;
 use Drupal\Core\DependencyInjection\Compiler\RegisterLazyRouteEnhancers;
 use Drupal\Core\DependencyInjection\Compiler\RegisterLazyRouteFilters;
-use Drupal\Core\DependencyInjection\Compiler\DependencySerializationTraitPass;
 use Drupal\Core\DependencyInjection\Compiler\StackedKernelPass;
 use Drupal\Core\DependencyInjection\Compiler\RegisterStreamWrappersPass;
 use Drupal\Core\DependencyInjection\ServiceProviderInterface;
@@ -85,8 +84,6 @@ class CoreServiceProvider implements ServiceProviderInterface  {
 
     // Register plugin managers.
     $container->addCompilerPass(new PluginManagerPass());
-
-    $container->addCompilerPass(new DependencySerializationTraitPass());
   }
 
   /**

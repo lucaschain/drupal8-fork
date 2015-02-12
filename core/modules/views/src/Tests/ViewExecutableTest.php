@@ -7,7 +7,6 @@
 
 namespace Drupal\views\Tests;
 
-use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\views\Views;
 use Drupal\views\ViewExecutable;
 use Drupal\views\ViewExecutableFactory;
@@ -30,8 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @see \Drupal\views\ViewExecutable
  */
 class ViewExecutableTest extends ViewUnitTestBase {
-
-  use CommentTestTrait;
 
   public static $modules = array('system', 'node', 'comment', 'user', 'filter', 'field', 'text', 'entity_reference');
 
@@ -89,7 +86,7 @@ class ViewExecutableTest extends ViewUnitTestBase {
       'type' => 'page',
       'name' => 'Page',
     ))->save();
-    $this->addDefaultCommentField('node', 'page');
+    $this->container->get('comment.manager')->addDefaultField('node', 'page');
     parent::setUpFixtures();
 
     $this->installConfig(array('filter'));
@@ -322,6 +319,18 @@ class ViewExecutableTest extends ViewUnitTestBase {
     $view->override_path = $override_path;
     $this->assertEqual($view->getPath(), $override_path);
 
+    // Test the getUrl method().
+    $url = 'foo';
+    $this->assertEqual($view->getUrl(NULL, $url), $url);
+    // Test with arguments.
+    $arg1 = 'bar';
+    $arg2 = 12345;
+    $this->assertEqual($view->getUrl(array($arg1, $arg2), $url), "$url/$arg1/$arg2");
+    // Test the override_url property override.
+    $override_url = 'baz';
+    $view->override_url = $override_url;
+    $this->assertEqual($view->getUrl(NULL, $url), $override_url);
+
     // Test the title methods.
     $title = $this->randomString();
     $view->setTitle($title);
@@ -390,19 +399,6 @@ class ViewExecutableTest extends ViewUnitTestBase {
         $this->assertEqual($types[$type]['plural'], $type . 's');
       }
     }
-  }
-
-  /**
-   * Tests ViewExecutable::getHandlers().
-   */
-  public function testGetHandlers() {
-    $view = Views::getView('test_executable_displays');
-    $view->setDisplay('page_1');
-
-    $view->getHandlers('field', 'page_2');
-
-    // getHandlers() shouldn't change the active display.
-    $this->assertEqual('page_1', $view->current_display, "The display shouldn't change after getHandlers()");
   }
 
   /**

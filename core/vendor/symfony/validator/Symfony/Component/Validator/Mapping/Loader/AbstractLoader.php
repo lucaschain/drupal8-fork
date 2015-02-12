@@ -17,8 +17,7 @@ use Symfony\Component\Validator\Exception\MappingException;
 abstract class AbstractLoader implements LoaderInterface
 {
     /**
-     * Contains all known namespaces indexed by their prefix.
-     *
+     * Contains all known namespaces indexed by their prefix
      * @var array
      */
     protected $namespaces = array();

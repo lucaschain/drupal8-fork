@@ -22,8 +22,7 @@ class VariableMultiRow extends DrupalSqlBase {
   public function query() {
     return $this->select('variable', 'v')
       ->fields('v', array('name', 'value'))
-      // Cast scalars to array so we can consistently use an IN condition.
-      ->condition('name', (array) $this->configuration['variables'], 'IN');
+      ->condition('name', $this->configuration['variables']);
   }
 
   /**

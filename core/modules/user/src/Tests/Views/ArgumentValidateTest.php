@@ -25,13 +25,6 @@ class ArgumentValidateTest extends UserTestBase {
    */
   public static $testViews = array('test_view_argument_validate_user', 'test_view_argument_validate_username');
 
-  /**
-   * A user for this test.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $account;
-
   protected function setUp() {
     parent::setUp();
 

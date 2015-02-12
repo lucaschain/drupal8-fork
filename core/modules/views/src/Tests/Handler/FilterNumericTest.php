@@ -80,8 +80,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters['age']['group_info']['default_group'] = 1;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -175,8 +173,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters['age']['group_info']['default_group'] = 2;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -205,8 +201,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters['age']['group_info']['default_group'] = 3;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -295,8 +289,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters['age']['group_info']['default_group'] = 4;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -313,8 +305,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters['age']['group_info']['default_group'] = 5;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -376,7 +366,6 @@ class FilterNumericTest extends ViewUnitTestBase {
     $filters = array(
       'age' => array(
         'id' => 'age',
-        'plugin_id' => 'numeric',
         'table' => 'views_test_data',
         'field' => 'age',
         'relationship' => 'none',

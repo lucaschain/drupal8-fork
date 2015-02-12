@@ -92,17 +92,17 @@ class MigrateTaxonomyTermTest extends MigrateDrupalTestBase {
       $term = $terms[$tid];
       $this->assertIdentical($term->name->value, "term {$tid} of vocabulary {$values['source_vid']}");
       $this->assertIdentical($term->description->value, "description of term {$tid} of vocabulary {$values['source_vid']}");
-      $this->assertIdentical($term->vid->target_id, $values['vid']);
-      $this->assertIdentical($term->weight->value, (string) $values['weight']);
+      $this->assertEqual($term->vid->target_id, $values['vid']);
+      $this->assertEqual($term->weight->value, $values['weight']);
       if ($values['parent'] === array(0)) {
-        $this->assertNull($term->parent->target_id);
+        $this->assertEqual($term->parent->target_id, 0);
       }
       else {
         $parents = array();
         foreach (taxonomy_term_load_parents($tid) as $parent) {
-          $parents[] = (int) $parent->id();
+          $parents[] = $parent->id();
         }
-        $this->assertIdentical($values['parent'], $parents);
+        $this->assertEqual($values['parent'], $parents);
       }
     }
   }

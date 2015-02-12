@@ -310,7 +310,6 @@ class ManyToOneHelper {
       else {
         $placeholder = $this->placeholder();
         if (count($this->handler->value) > 1) {
-          $placeholder .= '[]';
           $this->handler->query->addWhereExpression(0, "$field $operator($placeholder)", array($placeholder => $value));
         }
         else {

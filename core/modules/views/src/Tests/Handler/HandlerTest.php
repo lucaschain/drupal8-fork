@@ -7,7 +7,6 @@
 
 namespace Drupal\views\Tests\Handler;
 
-use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Tests\ViewTestBase;
@@ -20,8 +19,6 @@ use Drupal\views\Views;
  * @group views
  */
 class HandlerTest extends ViewTestBase {
-
-  use CommentTestTrait;
 
   /**
    * Views used by this test.
@@ -40,7 +37,7 @@ class HandlerTest extends ViewTestBase {
   protected function setUp() {
     parent::setUp();
     $this->drupalCreateContentType(array('type' => 'page'));
-    $this->addDefaultCommentField('node', 'page');
+    $this->container->get('comment.manager')->addDefaultField('node', 'page');
     $this->enableViewsTestModule();
   }
 

@@ -83,8 +83,8 @@ class FieldConfigListBuilder extends ConfigEntityListBuilder {
     $this->targetBundle = $target_bundle;
 
     $build = parent::render();
-    $build['table']['#attributes']['id'] = 'field-overview';
-    $build['table']['#empty'] = $this->t('No fields are present yet.');
+    $build['#attributes']['id'] = 'field-overview';
+    $build['#empty'] = $this->t('No fields are present yet.');
 
     return $build;
   }
@@ -149,7 +149,7 @@ class FieldConfigListBuilder extends ConfigEntityListBuilder {
     // Add the operations.
     $row['data'] = $row['data'] + parent::buildRow($field_config);
 
-    if ($field_storage->isLocked()) {
+    if (!empty($field_storage->locked)) {
       $row['data']['operations'] = array('data' => array('#markup' => $this->t('Locked')));
       $row['class'][] = 'menu-disabled';
     }
@@ -168,15 +168,13 @@ class FieldConfigListBuilder extends ConfigEntityListBuilder {
       $operations['edit'] = array(
         'title' => $this->t('Edit'),
         'weight' => 10,
-        'url' => $entity->urlInfo("{$entity->entity_type}-field-edit-form"),
-      );
+      ) + $entity->urlInfo("{$entity->entity_type}-field-edit-form")->toArray();
     }
     if ($entity->access('delete') && $entity->hasLinkTemplate("{$entity->entity_type}-field-delete-form")) {
       $operations['delete'] = array(
-        'title' => $this->t('Delete'),
-        'weight' => 100,
-        'url' => $entity->urlInfo("{$entity->entity_type}-field-delete-form"),
-      );
+      'title' => $this->t('Delete'),
+      'weight' => 100,
+      ) + $entity->urlInfo("{$entity->entity_type}-field-delete-form")->toArray();
     }
 
     $operations['storage-settings'] = array(

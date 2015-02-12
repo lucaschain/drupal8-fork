@@ -86,7 +86,7 @@ class EntityListBuilderTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getOperations
+   * @covers \Drupal\Core\Entity\EntityListBuilder::getOperations
    */
   public function testGetOperations() {
     $operation_name = $this->randomMachineName();

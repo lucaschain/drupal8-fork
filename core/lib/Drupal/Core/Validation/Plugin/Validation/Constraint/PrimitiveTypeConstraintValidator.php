@@ -49,12 +49,7 @@ class PrimitiveTypeConstraintValidator extends ConstraintValidator {
     if ($typed_data instanceof StringInterface && !is_scalar($value)) {
       $valid = FALSE;
     }
-    // Ensure that URIs comply with http://tools.ietf.org/html/rfc3986, which
-    // requires:
-    // - That it is well formed (parse_url() returns FALSE if not).
-    // - That it contains a scheme (parse_url(, PHP_URL_SCHEME) returns NULL if
-    //   not).
-    if ($typed_data instanceof UriInterface && in_array(parse_url($value, PHP_URL_SCHEME), [NULL, FALSE], TRUE)) {
+    if ($typed_data instanceof UriInterface && filter_var($value, FILTER_VALIDATE_URL) === FALSE) {
       $valid = FALSE;
     }
     // @todo: Move those to separate constraint validators.

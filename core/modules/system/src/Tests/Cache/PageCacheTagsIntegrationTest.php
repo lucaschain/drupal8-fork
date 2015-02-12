@@ -7,7 +7,6 @@
 
 namespace Drupal\system\Tests\Cache;
 
-use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 use Drupal\Core\Cache\Cache;
 
@@ -25,9 +24,6 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
 
   protected $dumpHeaders = TRUE;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 
@@ -67,15 +63,14 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
         'request_path' => array(
           'pages' => 'node/' . $node_2->id(),
         ),
-      ),
+      )
     ));
 
     // Full node page 1.
-    $this->verifyPageCacheTags($node_1->urlInfo(), array(
+    $this->verifyPageCacheTags('node/' . $node_1->id(), array(
       'rendered',
       'block_view',
       'config:block_list',
-      'config:block.block.bartik_breadcrumbs',
       'config:block.block.bartik_content',
       'config:block.block.bartik_tools',
       'config:block.block.bartik_login',
@@ -83,7 +78,6 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
       'config:block.block.bartik_powered',
       'config:block.block.bartik_main_menu',
       'config:block.block.bartik_account_menu',
-      'block_plugin:system_breadcrumb_block',
       'block_plugin:system_main_block',
       'block_plugin:system_menu_block__account',
       'block_plugin:system_menu_block__main',
@@ -102,11 +96,10 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
     ));
 
     // Full node page 2.
-    $this->verifyPageCacheTags($node_2->urlInfo(), array(
+    $this->verifyPageCacheTags('node/' . $node_2->id(), array(
       'rendered',
       'block_view',
       'config:block_list',
-      'config:block.block.bartik_breadcrumbs',
       'config:block.block.bartik_content',
       'config:block.block.bartik_tools',
       'config:block.block.bartik_login',
@@ -115,7 +108,6 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
       'config:block.block.bartik_powered',
       'config:block.block.bartik_main_menu',
       'config:block.block.bartik_account_menu',
-      'block_plugin:system_breadcrumb_block',
       'block_plugin:system_main_block',
       'block_plugin:system_menu_block__account',
       'block_plugin:system_menu_block__main',
@@ -138,26 +130,24 @@ class PageCacheTagsIntegrationTest extends WebTestBase {
   /**
    * Fills page cache for the given path, verify cache tags on page cache hit.
    *
-   * @param \Drupal\Core\Url $url
-   *   The url
+   * @param $path
+   *   The Drupal page path to test.
    * @param $expected_tags
    *   The expected cache tags for the page cache entry of the given $path.
    */
-  protected function verifyPageCacheTags(Url $url, $expected_tags) {
-    // @todo Change ->drupalGet() calls to just pass $url when
-    //   https://www.drupal.org/node/2350837 gets committed
+  protected function verifyPageCacheTags($path, $expected_tags) {
     sort($expected_tags);
-    $this->drupalGet($url->setAbsolute()->toString());
+    $this->drupalGet($path);
     $this->assertEqual($this->drupalGetHeader('X-Drupal-Cache'), 'MISS');
     $actual_tags = explode(' ', $this->drupalGetHeader('X-Drupal-Cache-Tags'));
     sort($actual_tags);
     $this->assertIdentical($actual_tags, $expected_tags);
-    $this->drupalGet($url->setAbsolute()->toString());
+    $this->drupalGet($path);
     $actual_tags = explode(' ', $this->drupalGetHeader('X-Drupal-Cache-Tags'));
     sort($actual_tags);
     $this->assertEqual($this->drupalGetHeader('X-Drupal-Cache'), 'HIT');
     $this->assertIdentical($actual_tags, $expected_tags);
-    $cid_parts = array($url->setAbsolute()->toString(), 'html');
+    $cid_parts = array(_url($path, array('absolute' => TRUE)), 'html');
     $cid = implode(':', $cid_parts);
     $cache_entry = \Drupal::cache('render')->get($cid);
     sort($cache_entry->tags);

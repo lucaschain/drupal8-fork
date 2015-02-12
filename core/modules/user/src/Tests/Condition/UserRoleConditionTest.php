@@ -29,21 +29,21 @@ class UserRoleConditionTest extends KernelTestBase {
   /**
    * An anonymous user for testing purposes.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\user\Entity\User
    */
   protected $anonymous;
 
   /**
    * An authenticated user for testing purposes.
    *
-   * @var \Drupal\user\UserInterface
+   * @var \Drupal\user\Entity\User
    */
   protected $authenticated;
 
   /**
    * A custom role for testing purposes.
    *
-   * @var \Drupal\user\Entity\RoleInterface
+   * @var \Drupal\user\Entity\Role
    */
   protected $role;
 

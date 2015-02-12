@@ -1,6 +1,5 @@
 /**
- * @file
- * Styles for Seven's Pagination.
+ * Pagination.
  */
 .pager__items {
   margin: 0.25em 0 0.25em 1.5em;
@@ -17,9 +16,10 @@
   border-bottom: 2px solid transparent;
   line-height: 1.55em;
   padding: 0 5px 2px;
-  font-weight: 600;
   text-decoration: none;
+  -webkit-transition: border-bottom-color 0.2s;
   transition: border-bottom-color 0.2s;
+  font-weight: 600;
   -webkit-font-smoothing: antialiased;
 }
 .pager__item.is-active a {

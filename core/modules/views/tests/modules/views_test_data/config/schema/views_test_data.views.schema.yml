@@ -101,3 +101,4 @@ views.argument_default.argument_default_test:
 
 views.argument_validator.argument_validator_test:
   type: ignore
+

@@ -46,8 +46,7 @@ class ResultTest extends UnitTestCase {
     $views_data = $this->getMockBuilder('Drupal\views\ViewsData')
       ->disableOriginalConstructor()
       ->getMock();
-    $route_provider = $this->getMock('Drupal\Core\Routing\RouteProviderInterface');
-    $this->view = new ViewExecutable($storage, $user, $views_data, $route_provider);
+    $this->view = new ViewExecutable($storage, $user, $views_data);
 
     $this->resultHandler = new Result(array(), 'result', array());
     $this->resultHandler->view = $this->view;

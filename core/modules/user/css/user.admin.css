@@ -3,20 +3,18 @@
  * Admin styling for the User module.
  */
 
-/* Permissions page */
-.permissions .module {
+#permissions td.module {
   font-weight: bold;
 }
-.permissions .permission {
+#permissions td.permission {
   padding-left: 1.5em; /* LTR */
 }
-[dir="rtl"] .permissions .permission {
+[dir="rtl"] #permissions td.permission {
   padding-left: 0;
   padding-right: 1.5em;
 }
 
-/* Account settings */
-.user-admin-settings .details-description {
+#user-admin-settings .details-description {
   font-size: 0.85em;
   padding-bottom: .5em;
 }

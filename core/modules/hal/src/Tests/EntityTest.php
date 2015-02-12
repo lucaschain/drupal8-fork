@@ -7,16 +7,12 @@
 
 namespace Drupal\hal\Tests;
 
-use Drupal\comment\Tests\CommentTestTrait;
-
 /**
  * Tests that nodes and terms are correctly normalized and denormalized.
  *
  * @group hal
  */
 class EntityTest extends NormalizerTestBase {
-
-  use CommentTestTrait;
 
   /**
    * Modules to enable.
@@ -54,7 +50,7 @@ class EntityTest extends NormalizerTestBase {
       'target_entity_type_id' => 'node',
     ))->save();
 
-    $this->addDefaultCommentField('node', 'example_type');
+    $this->container->get('comment.manager')->addDefaultField('node', 'example_type');
 
     $node = entity_create('node', array(
       'title' => $this->randomMachineName(),
@@ -150,7 +146,7 @@ class EntityTest extends NormalizerTestBase {
       'target_entity_type_id' => 'node',
     ))->save();
 
-    $this->addDefaultCommentField('node', 'example_type');
+    $this->container->get('comment.manager')->addDefaultField('node', 'example_type');
 
     $node = entity_create('node', array(
       'title' => $this->randomMachineName(),

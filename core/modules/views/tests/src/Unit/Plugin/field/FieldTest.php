@@ -56,13 +56,6 @@ class FieldTest extends UnitTestCase {
   protected $renderer;
 
   /**
-   * The container.
-   *
-   * @var \Drupal\Core\DependencyInjection\Container
-   */
-  protected $container;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -90,9 +83,9 @@ class FieldTest extends UnitTestCase {
       ->disableOriginalConstructor()
       ->getMock();
 
-    $this->container = new ContainerBuilder();
-    $this->container->set('plugin.manager.field.field_type', $this->fieldTypePluginManager);
-    \Drupal::setContainer($this->container);
+    $container = new ContainerBuilder();
+    $container->set('plugin.manager.field.field_type', $this->fieldTypePluginManager);
+    \Drupal::setContainer($container);
   }
 
   /**
@@ -134,7 +127,7 @@ class FieldTest extends UnitTestCase {
     $handler->init($this->executable, $this->display, $options);
 
     $this->assertEquals('value', $handler->options['group_column']);
-    $this->assertEquals(0, $handler->options['delta_limit']);
+    $this->assertEquals('all', $handler->options['delta_limit']);
   }
 
   /**
@@ -413,8 +406,6 @@ class FieldTest extends UnitTestCase {
     $handler = new Field([], 'field', $definition, $this->entityManager, $this->formatterPluginManager, $this->fieldTypePluginManager, $this->languageManager, $this->renderer);
     $handler->view = $this->executable;
 
-    $this->setupLanguageRenderer($handler, $definition);
-
     $field_storage = $this->getBaseFieldStorage();
     $this->entityManager->expects($this->any())
       ->method('getFieldStorageDefinitions')
@@ -473,8 +464,6 @@ class FieldTest extends UnitTestCase {
     ];
     $handler = new Field([], 'field', $definition, $this->entityManager, $this->formatterPluginManager, $this->fieldTypePluginManager, $this->languageManager, $this->renderer);
     $handler->view = $this->executable;
-
-    $this->setupLanguageRenderer($handler, $definition);
 
     $field_storage = $this->getConfigFieldStorage();
     $this->entityManager->expects($this->any())
@@ -574,43 +563,6 @@ class FieldTest extends UnitTestCase {
       ['ASC'],
       ['DESC'],
     ];
-  }
-
-  /**
-   * Setup the mock data needed to make language renderers work.
-   *
-   * @param \Drupal\views\Plugin\views\field\Field $handler
-   *   The field handler.
-   * @param $definition
-   *   An array with entity type definition data.
-   */
-  protected function setupLanguageRenderer(Field $handler, $definition) {
-    $display_handler = $this->getMockBuilder('\Drupal\views\Plugin\views\display\DisplayPluginBase')
-      ->disableOriginalConstructor()
-      ->getMock();
-    $display_handler->expects($this->any())
-      ->method('getOption')
-      ->with($this->equalTo('rendering_language'))
-      ->willReturn('en');
-    $handler->view->display_handler = $display_handler;
-
-    $data['table']['entity type'] = $definition['entity_type'];
-    $views_data = $this->getMockBuilder('\Drupal\views\ViewsData')
-      ->disableOriginalConstructor()
-      ->getMock();
-    $views_data->expects($this->any())
-      ->method('get')
-      ->willReturn($data);
-    $this->container->set('views.views_data', $views_data);
-
-    $entity_type = $this->getMock('\Drupal\Core\Entity\EntityTypeInterface');
-    $entity_type->expects($this->any())
-      ->method('id')
-      ->willReturn($definition['entity_type']);
-
-    $this->entityManager->expects($this->any())
-      ->method('getDefinition')
-      ->willReturn($entity_type);
   }
 
 }

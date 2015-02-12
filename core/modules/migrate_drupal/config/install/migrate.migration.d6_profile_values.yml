@@ -7,7 +7,10 @@ source:
 load:
   plugin: drupal_entity
 process:
-  uid: uid
+  uid:
+    plugin: migration
+    migration: d6_user
+    source: uid
 destination:
   plugin: entity:user
 migration_dependencies:

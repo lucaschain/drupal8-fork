@@ -98,25 +98,24 @@ class FieldStorageConfigListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $field_storage) {
-    if ($field_storage->isLocked()) {
+    if ($field_storage->locked) {
       $row['class'] = array('menu-disabled');
-      $row['data']['id'] =  t('@field_name (Locked)', array('@field_name' => $field_storage->getName()));
+      $row['data']['id'] =  t('@field_name (Locked)', array('@field_name' => $field_storage->field_name));
     }
     else {
-      $row['data']['id'] = $field_storage->getName();
+      $row['data']['id'] = $field_storage->field_name;
     }
 
-    $field_type = $this->fieldTypes[$field_storage->getType()];
+    $field_type = $this->fieldTypes[$field_storage->type];
     $row['data']['type'] = t('@type (module: @module)', array('@type' => $field_type['label'], '@module' => $field_type['provider']));
 
     $usage = array();
     foreach ($field_storage->getBundles() as $bundle) {
-      $entity_type_id = $field_storage->getTargetEntityTypeId();
-      if ($route_info = FieldUI::getOverviewRouteInfo($entity_type_id, $bundle)) {
-        $usage[] = \Drupal::l($this->bundles[$entity_type_id][$bundle]['label'], $route_info);
+      if ($route_info = FieldUI::getOverviewRouteInfo($field_storage->entity_type, $bundle)) {
+        $usage[] = \Drupal::l($this->bundles[$field_storage->entity_type][$bundle]['label'], $route_info);
       }
       else {
-        $usage[] = $this->bundles[$entity_type_id][$bundle]['label'];
+        $usage[] = $this->bundles[$field_storage->entity_type][$bundle]['label'];
       }
     }
     $usage_escaped = '';

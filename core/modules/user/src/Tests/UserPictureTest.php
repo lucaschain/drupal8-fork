@@ -27,17 +27,13 @@ class UserPictureTest extends WebTestBase {
    */
   protected $profile = 'standard';
 
-  /**
-   * A regular user.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $webUser;
+  protected $user;
+  protected $_directory_test;
 
   protected function setUp() {
     parent::setUp();
 
-    $this->webUser = $this->drupalCreateUser(array(
+    $this->web_user = $this->drupalCreateUser(array(
       'access content',
       'access comments',
       'post comments',
@@ -49,7 +45,7 @@ class UserPictureTest extends WebTestBase {
    * Tests creation, display, and deletion of user pictures.
    */
   function testCreateDeletePicture() {
-    $this->drupalLogin($this->webUser);
+    $this->drupalLogin($this->web_user);
 
     // Save a new picture.
     $image = current($this->drupalGetTestFiles('image'));
@@ -61,7 +57,7 @@ class UserPictureTest extends WebTestBase {
 
     // Delete the picture.
     $edit = array();
-    $this->drupalPostForm('user/' . $this->webUser->id() . '/edit', $edit, t('Remove'));
+    $this->drupalPostForm('user/' . $this->web_user->id() . '/edit', $edit, t('Remove'));
     $this->drupalPostForm(NULL, array(), t('Save'));
 
     // Call file_cron() to clean up the file. Make sure the timestamp
@@ -86,7 +82,7 @@ class UserPictureTest extends WebTestBase {
    * Tests embedded users on node pages.
    */
   function testPictureOnNodeComment() {
-    $this->drupalLogin($this->webUser);
+    $this->drupalLogin($this->web_user);
 
     // Save a new picture.
     $image = current($this->drupalGetTestFiles('image'));
@@ -128,10 +124,10 @@ class UserPictureTest extends WebTestBase {
    */
   function saveUserPicture($image) {
     $edit = array('files[user_picture_0]' => drupal_realpath($image->uri));
-    $this->drupalPostForm('user/' . $this->webUser->id() . '/edit', $edit, t('Save'));
+    $this->drupalPostForm('user/' . $this->web_user->id() . '/edit', $edit, t('Save'));
 
     // Load actual user data from database.
-    $account = user_load($this->webUser->id(), TRUE);
+    $account = user_load($this->web_user->id(), TRUE);
     return file_load($account->user_picture->target_id, TRUE);
   }
 }

@@ -7,8 +7,6 @@
  * @ingroup views_module_handlers
  */
 
-use Drupal\field\FieldStorageConfigInterface;
-
 /**
  * Implements hook_field_views_data().
  *
@@ -16,7 +14,7 @@ use Drupal\field\FieldStorageConfigInterface;
  * argument handlers for list fields. This should allow to select values of
  * the list.
  */
-function options_field_views_data(FieldStorageConfigInterface $field) {
+function options_field_views_data($field) {
   $data = views_field_default_views_data($field);
 
   $function = $field->getSetting('allowed_values_function');
@@ -31,7 +29,7 @@ function options_field_views_data(FieldStorageConfigInterface $field) {
         $data[$table_name][$field_name]['filter']['id'] = 'list_field';
       }
       if (isset($field_data['argument']) && $field_name != 'delta') {
-        if ($field->getType() == 'list_string') {
+        if ($field->type == 'list_string') {
           $data[$table_name][$field_name]['argument']['id'] = 'string_list_field';
         }
         else {

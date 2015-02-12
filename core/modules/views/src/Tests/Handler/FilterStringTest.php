@@ -120,8 +120,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = 1;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -146,7 +144,7 @@ class FilterStringTest extends ViewUnitTestBase {
         'field' => 'name',
         'relationship' => 'none',
         'operator' => '!=',
-        'value' => 'Ringo',
+        'value' => array('value' => 'Ringo'),
       ),
     ));
 
@@ -177,8 +175,6 @@ class FilterStringTest extends ViewUnitTestBase {
 
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -234,8 +230,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = '3';
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -310,8 +304,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = '3';
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -377,8 +369,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 2;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -430,8 +420,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 3;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -486,8 +474,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 4;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -539,8 +525,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 5;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -594,8 +578,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 6;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
 
@@ -648,8 +630,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = 4;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -696,8 +676,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['name']['group_info']['default_group'] = 5;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -741,8 +719,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters['description']['group_info']['default_group'] = 7;
     $view->setDisplay('page_1');
     $view->displayHandlers->get('page_1')->overrideOption('filters', $filters);
-    $view->save();
-    $this->container->get('router.builder')->rebuild();
 
     $this->executeView($view);
     $resultset = array(
@@ -757,7 +733,6 @@ class FilterStringTest extends ViewUnitTestBase {
     $filters = array(
       'name' => array(
         'id' => 'name',
-        'plugin_id' => 'string',
         'table' => 'views_test_data',
         'field' => 'name',
         'relationship' => 'none',
@@ -781,7 +756,7 @@ class FilterStringTest extends ViewUnitTestBase {
             2 => array(
               'title' => 'Is not Ringo',
               'operator' => '!=',
-              'value' => 'Ringo',
+              'value' => array('value' => 'Ringo'),
             ),
             3 => array(
               'title' => 'Contains ing',
@@ -803,7 +778,6 @@ class FilterStringTest extends ViewUnitTestBase {
       ),
       'description' => array(
         'id' => 'description',
-        'plugin_id' => 'string',
         'table' => 'views_test_data',
         'field' => 'description',
         'relationship' => 'none',

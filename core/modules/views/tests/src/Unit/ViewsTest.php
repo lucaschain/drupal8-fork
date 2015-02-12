@@ -34,8 +34,7 @@ class ViewsTest extends UnitTestCase {
     $views_data = $this->getMockBuilder('Drupal\views\ViewsData')
       ->disableOriginalConstructor()
       ->getMock();
-    $route_provider = $this->getMock('Drupal\Core\Routing\RouteProviderInterface');
-    $container->set('views.executable', new ViewExecutableFactory($user, $request_stack, $views_data, $route_provider));
+    $container->set('views.executable', new ViewExecutableFactory($user, $request_stack, $views_data));
 
     $this->view = new View(array('id' => 'test_view'), 'view');
 

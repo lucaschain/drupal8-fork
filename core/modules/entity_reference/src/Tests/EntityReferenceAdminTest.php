@@ -28,7 +28,7 @@ class EntityReferenceAdminTest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = array('node', 'field_ui', 'entity_reference', 'path', 'taxonomy', 'block');
+  public static $modules = array('node', 'field_ui', 'entity_reference', 'path', 'taxonomy');
 
 
   /**
@@ -38,12 +38,8 @@ class EntityReferenceAdminTest extends WebTestBase {
    */
   protected $type;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
 
     // Create test user.
     $admin_user = $this->drupalCreateUser(array('access content', 'administer node fields', 'administer node display'));

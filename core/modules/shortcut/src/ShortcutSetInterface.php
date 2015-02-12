@@ -27,7 +27,7 @@ interface ShortcutSetInterface extends ConfigEntityInterface {
   public function resetLinkWeights();
 
   /**
-   * Returns all the shortcuts from a shortcut set sorted correctly.
+   * Returns all the shortcuts from a shortcut set.
    *
    * @return \Drupal\shortcut\ShortcutInterface[]
    *   An array of shortcut entities.

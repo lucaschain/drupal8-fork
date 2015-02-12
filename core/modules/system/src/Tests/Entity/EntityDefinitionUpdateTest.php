@@ -541,47 +541,20 @@ class EntityDefinitionUpdateTest extends EntityUnitTestBase {
   }
 
   /**
-   * Tests updating entity schema and creating a base field.
-   *
-   * This tests updating entity schema and creating a base field at the same
-   * time when there are no existing entities.
+   * Tests updating entity schema and creating a base field at the same time when there are no existing entities.
    */
   public function testEntityTypeSchemaUpdateAndBaseFieldCreateWithoutData() {
     $this->updateEntityTypeToRevisionable();
     $this->addBaseField();
-    $message = 'Successfully updated entity schema and created base field at the same time.';
     // Entity type updates create base fields as well, thus make sure doing both
     // at the same time does not lead to errors due to the base field being
     // created twice.
     try {
       $this->entityDefinitionUpdateManager->applyUpdates();
-      $this->pass($message);
+      $this->pass('Successfully updated entity schema and created base field at the same time.');
     }
     catch (\Exception $e) {
-      $this->fail($message);
-      throw $e;
-    }
-  }
-
-  /**
-   * Tests updating entity schema and creating a revisionable base field.
-   *
-   * This tests updating entity schema and creating a revisionable base field
-   * at the same time when there are no existing entities.
-   */
-  public function testEntityTypeSchemaUpdateAndRevisionableBaseFieldCreateWithoutData() {
-    $this->updateEntityTypeToRevisionable();
-    $this->addRevisionableBaseField();
-    $message = 'Successfully updated entity schema and created revisionable base field at the same time.';
-    // Entity type updates create base fields as well, thus make sure doing both
-    // at the same time does not lead to errors due to the base field being
-    // created twice.
-    try {
-      $this->entityDefinitionUpdateManager->applyUpdates();
-      $this->pass($message);
-    }
-    catch (\Exception $e) {
-      $this->fail($message);
+      $this->fail('Successfully updated entity schema and created base field at the same time.');
       throw $e;
     }
   }

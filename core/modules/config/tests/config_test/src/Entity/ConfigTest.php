@@ -23,7 +23,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "list_builder" = "Drupal\config_test\ConfigTestListBuilder",
  *     "form" = {
  *       "default" = "Drupal\config_test\ConfigTestForm",
- *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
+ *       "delete" = "Drupal\config_test\Form\ConfigTestDeleteForm"
  *     },
  *     "access" = "Drupal\config_test\ConfigTestAccessControlHandler"
  *   },
@@ -122,7 +122,7 @@ class ConfigTest extends ConfigEntityBase implements ConfigTestInterface {
    * {@inheritdoc}
    */
   public function onDependencyRemoval(array $dependencies) {
-    $changed = parent::onDependencyRemoval($dependencies);
+    $changed = FALSE;
     $fix_deps = \Drupal::state()->get('config_test.fix_dependencies', array());
     foreach ($dependencies['config'] as $entity) {
       if (in_array($entity->getConfigDependencyName(), $fix_deps)) {
@@ -133,7 +133,9 @@ class ConfigTest extends ConfigEntityBase implements ConfigTestInterface {
         }
       }
     }
-    return $changed;
+    if ($changed) {
+      $this->save();
+    }
   }
 
   /**

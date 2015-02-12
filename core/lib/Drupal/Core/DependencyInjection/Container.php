@@ -17,13 +17,14 @@ class Container extends SymfonyContainer {
   /**
    * {@inheritdoc}
    */
-  public function set($id, $service, $scope = SymfonyContainer::SCOPE_CONTAINER) {
-     parent::set($id, $service, $scope);
-
-    // Ensure that the _serviceId property is set on synthetic services as well.
-    if (isset($this->services[$id]) && is_object($this->services[$id]) && !isset($this->services[$id]->_serviceId)) {
-      $this->services[$id]->_serviceId = $id;
+  public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE) {
+    $service = parent::get($id, $invalidBehavior);
+    // Some services are called but do not exist, so the parent returns nothing.
+    if (is_object($service)) {
+      $service->_serviceId = $id;
     }
+
+    return $service;
   }
 
   /**

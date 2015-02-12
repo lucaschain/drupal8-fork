@@ -75,10 +75,10 @@ class MigrateVocabularyEntityDisplayTest extends MigrateDrupalTestBase {
   public function testVocabularyEntityDisplay() {
     // Test that the field exists.
     $component = entity_get_display('node', 'page', 'default')->getComponent('tags');
-    $this->assertIdentical($component['type'], 'taxonomy_term_reference_link');
-    $this->assertIdentical($component['weight'], 20);
+    $this->assertEqual($component['type'], 'taxonomy_term_reference_link');
+    $this->assertEqual($component['weight'], 20);
     // Test the Id map.
-    $this->assertIdentical(array('node', 'article', 'default', 'tags'), entity_load('migration', 'd6_vocabulary_entity_display')->getIdMap()->lookupDestinationID(array(4, 'article')));
+    $this->assertEqual(array('node', 'article', 'default', 'tags'), entity_load('migration', 'd6_vocabulary_entity_display')->getIdMap()->lookupDestinationID(array(4, 'article')));
   }
 
 }

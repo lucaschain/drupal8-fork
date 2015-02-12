@@ -38,6 +38,7 @@ process:
     -
       plugin: migration
       migration: d6_filter_format
+      no_stub: 1
   user_picture:
     plugin: d6_user_picture
     source: uid
@@ -48,7 +49,7 @@ migration_dependencies:
   required:
     - d6_filter_format
     - d6_user_role
-  optional:
-    - d6_user_picture_file
     - d6_user_picture_entity_display
     - d6_user_picture_entity_form_display
+  optional:
+    - d6_user_picture_file

@@ -24,7 +24,7 @@
   content: "— ";
 }
 .caption-blockquote > figcaption {
-  text-align: left; /* LTR */
+  text-align: left;
 }
 [dir="rtl"] .caption-blockquote > figcaption {
   text-align: right;

@@ -28,7 +28,6 @@ class TokenReplaceTest extends ViewUnitTestBase {
   protected function setUp() {
     parent::setUp();
     $this->installSchema('system', 'url_alias');
-    $this->container->get('router.builder')->rebuild();
   }
 
   /**
@@ -45,7 +44,7 @@ class TokenReplaceTest extends ViewUnitTestBase {
       '[view:description]' => 'Test view to token replacement tests.',
       '[view:id]' => 'test_tokens',
       '[view:title]' => 'Test token page',
-      '[view:url]' => $view->getUrl(NULL, 'page_1')->setAbsolute(TRUE)->toString(),
+      '[view:url]' => _url('test_tokens', array('absolute' => TRUE)),
       '[view:total-rows]' => (string) $view->total_rows,
       '[view:base-table]' => 'views_test_data',
       '[view:base-field]' => 'id',

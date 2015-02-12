@@ -27,18 +27,12 @@ class EntityLink extends FieldPluginBase {
    */
   protected $build;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['teaser'] = array('default' => FALSE);
     return $options;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     $form['teaser'] = array(
       '#type' => 'checkbox',
@@ -50,13 +44,10 @@ class EntityLink extends FieldPluginBase {
     parent::buildOptionsForm($form, $form_state);
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function query() {}
 
   /**
-   * {@inheritdoc}
+   * Implements \Drupal\views\Plugin\views\field\FieldPluginBase::pre_render().
    */
   public function preRender(&$values) {
     // Render all nodes, so you can grep the comment links.

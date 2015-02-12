@@ -8,7 +8,6 @@
 namespace Drupal\comment\Plugin\views\field;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\views\ResultRow;
 
 /**
@@ -44,12 +43,8 @@ class LinkReply extends Link {
     $comment = $this->getEntity($values);
 
     $this->options['alter']['make_link'] = TRUE;
-    $this->options['alter']['url'] = Url::fromRoute('comment.reply', [
-      'entity_type' => $comment->getCommentedEntityTypeId(),
-      'entity' => $comment->getCommentedEntityId(),
-      'field_name' => $comment->getFieldName(),
-      'pid' => $comment->id(),
-    ]);
+    $this->options['alter']['path'] = "comment/reply/{$comment->getCommentedEntityTypeId()}/{$comment->getCommentedEntityId()}/{$comment->getFieldName()}/{$comment->id()}";
+
     return $text;
   }
 

@@ -7,7 +7,6 @@
 
 namespace Drupal\language\Tests;
 
-use Drupal\Core\Url;
 use Drupal\language\Entity\ConfigurableLanguage;
 use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationBrowser;
 use Drupal\language\Plugin\LanguageNegotiation\LanguageNegotiationSelected;
@@ -20,7 +19,6 @@ use Drupal\Core\Language\Language;
 use Drupal\Core\Language\LanguageInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\language\LanguageNegotiatorInterface;
-use Drupal\block\Entity\Block;
 
 /**
  * Tests UI language switching.
@@ -419,7 +417,7 @@ class LanguageUILanguageNegotiationTest extends WebTestBase {
   }
 
   /**
-   * Tests URL handling when separate domains are used for multiple languages.
+   * Tests _url() when separate domains are used for multiple languages.
    */
   function testLanguageDomain() {
     global $base_url;
@@ -464,22 +462,23 @@ class LanguageUILanguageNegotiationTest extends WebTestBase {
     // Test URL in another language: http://it.example.com/admin.
     // Base path gives problems on the testbot, so $correct_link is hard-coded.
     // @see UrlAlterFunctionalTest::assertUrlOutboundAlter (path.test).
-    $italian_url = Url::fromRoute('system.admin', [], ['language' => $languages['it']])->toString();
+    $italian_url = _url('admin', array('language' => $languages['it'], 'script' => ''));
     $url_scheme = \Drupal::request()->isSecure() ? 'https://' : 'http://';
     $correct_link = $url_scheme . $link;
-    $this->assertEqual($italian_url, $correct_link, format_string('The right URL (@url) in accordance with the chosen language', array('@url' => $italian_url)));
+    $this->assertEqual($italian_url, $correct_link, format_string('The _url() function returns the right URL (@url) in accordance with the chosen language', array('@url' => $italian_url)));
 
     // Test HTTPS via options.
-    $italian_url = Url::fromRoute('system.admin', [], ['https' => TRUE, 'language' => $languages['it']])->toString();
+    $italian_url = _url('admin', array('https' => TRUE, 'language' => $languages['it'], 'script' => ''));
     $correct_link = 'https://' . $link;
-    $this->assertTrue($italian_url == $correct_link, format_string('The right HTTPS URL (via options) (@url) in accordance with the chosen language', array('@url' => $italian_url)));
+    $this->assertTrue($italian_url == $correct_link, format_string('The _url() function returns the right HTTPS URL (via options) (@url) in accordance with the chosen language', array('@url' => $italian_url)));
 
     // Test HTTPS via current URL scheme.
     $request = Request::create('', 'GET', array(), array(), array(), array('HTTPS' => 'on'));
     $this->container->get('request_stack')->push($request);
-    $italian_url = Url::fromRoute('system.admin', [], ['language' => $languages['it']])->toString();
+    $generator = $this->container->get('url_generator');
+    $italian_url = _url('admin', array('language' => $languages['it'], 'script' => ''));
     $correct_link = 'https://' . $link;
-    $this->assertTrue($italian_url == $correct_link, format_string('The right URL (via current URL scheme) (@url) in accordance with the chosen language', array('@url' => $italian_url)));
+    $this->assertTrue($italian_url == $correct_link, format_string('The _url() function returns the right URL (via current URL scheme) (@url) in accordance with the chosen language', array('@url' => $italian_url)));
   }
 
   /**
@@ -502,30 +501,5 @@ class LanguageUILanguageNegotiationTest extends WebTestBase {
     // Ensure configuration was saved.
     $this->assertFalse(array_key_exists('language-url', $config->get('negotiation.language_content.enabled')), 'URL negotiation is not enabled for content.');
     $this->assertTrue(array_key_exists('language-session', $config->get('negotiation.language_content.enabled')), 'Session negotiation is enabled for content.');
-  }
-
-  /**
-   * Tests if the language switcher block gets deleted when a language type has been made not configurable.
-   */
-  public function testDisableLanguageSwitcher() {
-    $block_id = 'test_language_block';
-
-    // Enable the language switcher block.
-    $this->drupalPlaceBlock('language_block:' . LanguageInterface::TYPE_CONTENT, array('id' => $block_id));
-
-    // Check if the language switcher block has been created.
-    $block = Block::load($block_id);
-    $this->assertTrue($block, 'Language switcher block was created.');
-
-    // Make sure language_content is not configurable.
-    $edit = array(
-      'language_content[configurable]' => FALSE,
-    );
-    $this->drupalPostForm('admin/config/regional/language/detection', $edit, t('Save settings'));
-    $this->assertResponse(200);
-
-    // Check if the language switcher block has been removed.
-    $block = Block::load($block_id);
-    $this->assertFalse($block, 'Language switcher block was removed.');
   }
 }

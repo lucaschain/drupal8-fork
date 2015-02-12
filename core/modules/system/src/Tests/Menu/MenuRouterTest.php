@@ -7,7 +7,6 @@
 
 namespace Drupal\system\Tests\Menu;
 
-use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 
 /**
@@ -63,8 +62,7 @@ class MenuRouterTest extends WebTestBase {
    */
   protected function doTestHookMenuIntegration() {
     // Generate base path with random argument.
-    $machine_name = $this->randomMachineName(8);
-    $base_path = 'foo/' . $machine_name;
+    $base_path = 'foo/' . $this->randomMachineName(8);
     $this->drupalGet($base_path);
     // Confirm correct controller activated.
     $this->assertText('test1');
@@ -72,8 +70,8 @@ class MenuRouterTest extends WebTestBase {
     $this->assertLink('Local task A');
     $this->assertLink('Local task B');
     // Confirm correct local task href.
-    $this->assertLinkByHref(Url::fromRoute('menu_test.router_test1', ['bar' => $machine_name])->toString());
-    $this->assertLinkByHref(Url::fromRoute('menu_test.router_test2', ['bar' => $machine_name])->toString());
+    $this->assertLinkByHref(_url($base_path));
+    $this->assertLinkByHref(_url($base_path . '/b'));
   }
 
   /**
@@ -199,7 +197,7 @@ class MenuRouterTest extends WebTestBase {
       "%23%25%26%2B%2F%3F" . // Characters that look like a percent-escaped string.
       "éøïвβ中國書۞"; // Characters from various non-ASCII alphabets.
     $this->drupalGet($path);
-    $this->assertRaw('This is the menuTestCallback content.');
+    $this->assertRaw('This is menu_test_callback().');
   }
 
   /**

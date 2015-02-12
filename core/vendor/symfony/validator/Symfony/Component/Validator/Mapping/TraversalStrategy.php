@@ -53,7 +53,6 @@ class TraversalStrategy
      *
      * @deprecated This constant was added for backwards compatibility only.
      *             It will be removed in Symfony 3.0.
-     * @internal
      */
     const STOP_RECURSION = 8;
 

@@ -6,7 +6,9 @@
 
 namespace Drupal\rdf\Tests\Field;
 
-use Drupal\user\Entity\Role;
+use Drupal\rdf\Tests\Field\FieldRdfaTestBase;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Language\Language;
 
 /**
  * Tests the RDFa output of the entity reference field formatter.
@@ -51,12 +53,6 @@ class EntityReferenceRdfaTest extends FieldRdfaTestBase {
 
     $this->installEntitySchema('entity_test_rev');
 
-    // Give anonymous users permission to view test entities.
-    $this->installConfig(array('user'));
-    Role::load(DRUPAL_ANONYMOUS_RID)
-      ->grantPermission('view test entity')
-      ->save();
-
     entity_reference_create_field($this->entityType, $this->bundle, $this->fieldName, 'Field test', $this->entityType);
 
     // Add the mapping.
@@ -73,6 +69,7 @@ class EntityReferenceRdfaTest extends FieldRdfaTestBase {
     $this->entity = entity_create($this->entityType, array('name' => $this->randomMachineName()));
     $this->entity->save();
     $this->entity->{$this->fieldName}->entity = $this->targetEntity;
+    $this->entity->{$this->fieldName}->access = TRUE;
     $this->uri = $this->getAbsoluteUri($this->entity);
   }
 

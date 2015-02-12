@@ -8,7 +8,6 @@
 namespace Drupal\search\Tests;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\comment\Tests\CommentTestTrait;
 
 /**
  * Tests that comment count display toggles properly on comment status of node.
@@ -23,8 +22,6 @@ use Drupal\comment\Tests\CommentTestTrait;
  * @group search
  */
 class SearchCommentCountToggleTest extends SearchTestBase {
-
-  use CommentTestTrait;
 
   /**
    * Modules to enable.
@@ -57,7 +54,7 @@ class SearchCommentCountToggleTest extends SearchTestBase {
     $this->drupalLogin($this->searchingUser);
 
     // Add a comment field.
-    $this->addDefaultCommentField('node', 'article');
+    $this->container->get('comment.manager')->addDefaultField('node', 'article');
     // Create initial nodes.
     $node_params = array('type' => 'article', 'body' => array(array('value' => 'SearchCommentToggleTestCase')));
 

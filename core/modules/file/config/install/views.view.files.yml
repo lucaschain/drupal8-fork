@@ -32,7 +32,7 @@ display:
           disable_sql_rewrite: false
           distinct: false
           replica: false
-          query_comment: ''
+          query_comment: false
           query_tags: {  }
       exposed_form:
         type: basic
@@ -238,7 +238,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -291,7 +291,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -343,7 +343,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -394,7 +394,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -448,7 +448,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -502,7 +502,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -680,6 +680,8 @@ display:
       arguments: {  }
       group_by: true
       show_admin_links: true
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
   page_1:
     display_plugin: page
     id: page_1
@@ -707,6 +709,8 @@ display:
           group_type: group
           admin_label: 'File usage'
           required: false
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
   page_2:
     display_plugin: page
     id: page_2
@@ -777,7 +781,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -827,7 +831,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -876,7 +880,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -925,7 +929,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -1056,3 +1060,5 @@ display:
           group_type: group
           admin_label: 'File usage'
           required: true
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null

@@ -359,18 +359,21 @@ class SystemController extends ControllerBase {
     // An active link's path is equal to the current path, so search the HTML
     // for an attribute with that value.
     $offset = 0;
-    while (strpos($element['#markup'], $search_key_current_path, $offset) !== FALSE || ($context['front'] && strpos($element['#markup'], $search_key_front, $offset) !== FALSE)) {
+    while ((strpos($element['#markup'], 'data-drupal-link-system-path="' . $context['path'] . '"', $offset) !== FALSE || ($context['front'] && strpos($element['#markup'], 'data-drupal-link-system-path="&lt;front&gt;"', $offset) !== FALSE))) {
       $pos_current_path = strpos($element['#markup'], $search_key_current_path, $offset);
       $pos_front = strpos($element['#markup'], $search_key_front, $offset);
 
       // Determine which of the two values matched: the exact path, or the
       // <front> special case.
       $pos_match = NULL;
+      $type_match = NULL;
       if ($pos_current_path !== FALSE) {
         $pos_match = $pos_current_path;
+        $type_match = 'path';
       }
       elseif ($context['front'] && $pos_front !== FALSE) {
         $pos_match = $pos_front;
+        $type_match = 'front';
       }
 
       // Find beginning and ending of opening tag.
@@ -397,34 +400,32 @@ class SystemController extends ControllerBase {
       @$dom->loadHTML('<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head><body>' . $tag . '</body></html>');
       $node = $dom->getElementsByTagName('body')->item(0)->firstChild;
 
-      // Ensure we don't set the "active" class twice on the same element.
-      $class = $node->getAttribute('class');
-      $add_active = !in_array('active', explode(' ', $class));
-
       // The language of an active link is equal to the current language.
-      if ($add_active && $context['language']) {
+      $is_active = TRUE;
+      if ($context['language']) {
         if ($node->hasAttribute('hreflang') && $node->getAttribute('hreflang') !== $context['language']) {
-          $add_active = FALSE;
+          $is_active = FALSE;
         }
       }
       // The query parameters of an active link are equal to the current
       // parameters.
-      if ($add_active) {
+      if ($is_active) {
         if ($context['query']) {
           if (!$node->hasAttribute('data-drupal-link-query') || $node->getAttribute('data-drupal-link-query') !== Json::encode($context['query'])) {
-            $add_active = FALSE;
+            $is_active = FALSE;
           }
         }
         else {
           if ($node->hasAttribute('data-drupal-link-query')) {
-            $add_active = FALSE;
+            $is_active = FALSE;
           }
         }
       }
 
-      // Only if the path, the language and the query match, we set the
+      // Only if the the path, the language and the query match, we set the
       // "active" class.
-      if ($add_active) {
+      if ($is_active) {
+        $class = $node->getAttribute('class');
         if (strlen($class) > 0) {
           $class .= ' ';
         }

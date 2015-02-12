@@ -39,8 +39,6 @@ class reEnableModuleFieldTest extends WebTestBase {
 
   /**
    * Test the behavior of a field module after being disabled and re-enabled.
-   *
-   * @see field_system_info_alter()
    */
   function testReEnabledField() {
 

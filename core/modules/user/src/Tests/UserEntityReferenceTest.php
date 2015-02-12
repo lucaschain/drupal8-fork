@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Contains \Drupal\user\Tests\UserEntityReferenceTest.
@@ -18,16 +17,12 @@ use Drupal\system\Tests\Entity\EntityUnitTestBase;
 class UserEntityReferenceTest extends EntityUnitTestBase {
 
   /**
-   * A randomly-generated role for testing purposes.
-   *
-   * @var \Drupal\user\Entity\RoleInterface
+   * @var \Drupal\user\Entity\Role
    */
   protected $role1;
 
   /**
-   * A randomly-generated role for testing purposes.
-   *
-   * @var \Drupal\user\Entity\RoleInterface
+   * @var \Drupal\user\Entity\Role
    */
   protected $role2;
 
@@ -84,10 +79,10 @@ class UserEntityReferenceTest extends EntityUnitTestBase {
     $user3->save();
 
 
-    /** @var \Drupal\Core\Entity\EntityAutocompleteMatcher $autocomplete */
-    $autocomplete = \Drupal::service('entity.autocomplete_matcher');
+    /** @var \Drupal\entity_reference\EntityReferenceAutocomplete $autocomplete */
+    $autocomplete = \Drupal::service('entity_reference.autocomplete');
 
-    $matches = $autocomplete->getMatches('user', 'default', $field_definition->getSetting('handler_settings'), 'aabb');
+    $matches = $autocomplete->getMatches($field_definition, 'user', 'user', 'NULL', '', 'aabb');
     $this->assertEqual(count($matches), 2);
     $users = array();
     foreach ($matches as $match) {
@@ -97,7 +92,7 @@ class UserEntityReferenceTest extends EntityUnitTestBase {
     $this->assertTrue(in_array($user2->label(), $users));
     $this->assertFalse(in_array($user3->label(), $users));
 
-    $matches = $autocomplete->getMatches('user', 'default', $field_definition->getSetting('handler_settings'), 'aabbbb');
+    $matches = $autocomplete->getMatches($field_definition, 'user', 'user', 'NULL', '', 'aabbbb');
     $this->assertEqual(count($matches), 0, '');
   }
 }

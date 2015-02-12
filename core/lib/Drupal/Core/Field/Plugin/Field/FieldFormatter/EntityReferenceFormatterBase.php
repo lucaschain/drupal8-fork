@@ -30,19 +30,26 @@ abstract class EntityReferenceFormatterBase extends FormatterBase {
 
     $parent_entity_langcode = $items->getEntity()->language()->getId();
     foreach ($items as $delta => $item) {
-      // Ignore items where no entity could be loaded in prepareView().
-      if (!empty($item->_loaded)) {
-        $entity = $item->entity;
+      // The "originalEntity" property is assigned in self::prepareView() and
+      // its absence means that the referenced entity was neither found in the
+      // persistent storage nor is it a new entity (e.g. from "autocreate").
+      if (!isset($item->originalEntity)) {
+        $item->access = FALSE;
+        continue;
+      }
 
-        // Set the entity in the correct language for display.
-        if ($entity instanceof TranslatableInterface && $entity->hasTranslation($parent_entity_langcode)) {
-          $entity = $entity->getTranslation($parent_entity_langcode);
-        }
+      if ($item->originalEntity instanceof TranslatableInterface && $item->originalEntity->hasTranslation($parent_entity_langcode)) {
+        $entity = $item->originalEntity->getTranslation($parent_entity_langcode);
+      }
+      else {
+        $entity = $item->originalEntity;
+      }
 
-        // Check entity access.
-        if ($entity->access('view')) {
-          $entities[$delta] = $entity;
-        }
+      if ($item->access || $entity->access('view')) {
+        $entities[$delta] = $entity;
+
+        // Mark item as accessible.
+        $item->access = TRUE;
       }
     }
 
@@ -53,7 +60,7 @@ abstract class EntityReferenceFormatterBase extends FormatterBase {
    * {@inheritdoc}
    *
    * Loads the entities referenced in that field across all the entities being
-   * viewed.
+   * viewed, and places them in a custom item property for getEntitiesToView().
    */
   public function prepareView(array $entities_items) {
     // Load the existing (non-autocreate) entities. For performance, we want to
@@ -64,11 +71,6 @@ abstract class EntityReferenceFormatterBase extends FormatterBase {
     $ids = array();
     foreach ($entities_items as $items) {
       foreach ($items as $item) {
-        // To avoid trying to reload non-existent entities in
-        // getEntitiesToView(), explicitly mark the items where $item->entity
-        // contains a valid entity ready for display. All items are initialized
-        // at FALSE.
-        $item->_loaded = FALSE;
         if ($item->target_id !== NULL) {
           $ids[] = $item->target_id;
         }
@@ -79,16 +81,15 @@ abstract class EntityReferenceFormatterBase extends FormatterBase {
       $target_entities = \Drupal::entityManager()->getStorage($target_type)->loadMultiple($ids);
     }
 
-    // For each item, pre-populate the loaded entity in $item->entity, and set
-    // the 'loaded' flag.
+    // For each item, place the referenced entity where getEntitiesToView()
+    // reads it.
     foreach ($entities_items as $items) {
       foreach ($items as $item) {
         if (isset($target_entities[$item->target_id])) {
-          $item->entity = $target_entities[$item->target_id];
-          $item->_loaded = TRUE;
+          $item->originalEntity = $target_entities[$item->target_id];
         }
         elseif ($item->hasNewEntity()) {
-          $item->_loaded = TRUE;
+          $item->originalEntity = $item->entity;
         }
       }
     }

@@ -24,9 +24,8 @@ use Drupal\Core\Entity\EntityInterface;
 class CommentNonNodeTest extends WebTestBase {
 
   use FieldUiTestTrait;
-  use CommentTestTrait;
 
-  public static $modules = array('comment', 'user', 'field_ui', 'entity_test', 'block');
+  public static $modules = array('comment', 'user', 'field_ui', 'entity_test');
 
   /**
    * An administrative user with permission to configure comment settings.
@@ -35,12 +34,8 @@ class CommentNonNodeTest extends WebTestBase {
    */
   protected $adminUser;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
 
     // Create a bundle for entity_test.
     entity_test_create_bundle('entity_test', 'Entity Test', 'entity_test');
@@ -51,7 +46,7 @@ class CommentNonNodeTest extends WebTestBase {
       'target_entity_type_id' => 'entity_test',
     ))->save();
     // Create comment field on entity_test bundle.
-    $this->addDefaultCommentField('entity_test', 'entity_test');
+    $this->container->get('comment.manager')->addDefaultField('entity_test', 'entity_test');
 
     // Verify that bundles are defined correctly.
     $bundles = \Drupal::entityManager()->getBundleInfo('comment');

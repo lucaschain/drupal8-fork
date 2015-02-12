@@ -68,7 +68,7 @@ class ConstraintManager extends DefaultPluginManager {
       // Plugins need an array as configuration, so make sure we have one.
       // The constraint classes support passing the options as part of the
       // 'value' key also.
-      $options = isset($options) ? array('value' => $options) : array();
+      $options = array('value' => $options);
     }
     return $this->createInstance($name, $options);
   }

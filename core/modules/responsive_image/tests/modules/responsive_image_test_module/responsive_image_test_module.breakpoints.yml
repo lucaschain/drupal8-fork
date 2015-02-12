@@ -4,7 +4,6 @@ responsive_image_test_module.mobile:
   weight: 0
   multipliers:
     - 1x
-    - 1.5x
     - 2x
 responsive_image_test_module.narrow:
   label: narrow
@@ -12,7 +11,6 @@ responsive_image_test_module.narrow:
   weight: 1
   multipliers:
     - 1x
-    - 1.5x
     - 2x
 responsive_image_test_module.wide:
   label: wide
@@ -20,5 +18,4 @@ responsive_image_test_module.wide:
   weight: 2
   multipliers:
     - 1x
-    - 1.5x
     - 2x

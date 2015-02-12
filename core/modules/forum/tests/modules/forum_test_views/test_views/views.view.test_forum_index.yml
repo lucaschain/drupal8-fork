@@ -61,7 +61,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -86,7 +86,7 @@ display:
           type: yes-no
           type_custom_true: ''
           type_custom_false: ''
-          not: false
+          not: ''
           plugin_id: boolean
         comment_count:
           id: comment_count
@@ -114,7 +114,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: ''
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -148,3 +148,5 @@ display:
           plugin_id: numeric
       filters: {  }
       sorts: {  }
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null

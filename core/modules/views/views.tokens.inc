@@ -80,7 +80,6 @@ function views_tokens($type, $tokens, array $data = array(), array $options = ar
   $replacements = array();
 
   if ($type == 'view' && !empty($data['view'])) {
-    /** @var \Drupal\views\ViewExecutable $view */
     $view = $data['view'];
 
     foreach ($tokens as $name => $original) {
@@ -103,8 +102,8 @@ function views_tokens($type, $tokens, array $data = array(), array $options = ar
           break;
 
         case 'url':
-          if ($url = $view->getUrl()) {
-            $replacements[$original] = $url->setOptions($url_options)->toString();
+          if ($path = $view->getUrl()) {
+            $replacements[$original] = _url($path, $url_options);
           }
           break;
         case 'base-table':
@@ -133,7 +132,7 @@ function views_tokens($type, $tokens, array $data = array(), array $options = ar
     // [view:url:*] nested tokens. This only works if Token module is installed.
     if ($url_tokens = $token_service->findWithPrefix($tokens, 'url')) {
       if ($path = $view->getUrl()) {
-        $replacements += $token_service->generate('url', $url_tokens, array('path' => $url->getInternalPath()), $options);
+        $replacements += $token_service->generate('url', $url_tokens, array('path' => $path), $options);
       }
     }
   }

@@ -7,7 +7,6 @@
 
 namespace Drupal\system\Tests\Menu;
 
-use Drupal\Core\Url;
 use Drupal\simpletest\WebTestBase;
 
 /**
@@ -28,12 +27,12 @@ class LocalActionTest extends WebTestBase {
   public function testLocalAction() {
     $this->drupalGet('menu-test-local-action');
     // Ensure that both menu and route based actions are shown.
-    $this->assertLocalAction([
-      [Url::fromRoute('menu_test.local_action4'), 'My dynamic-title action'],
-      [Url::fromRoute('menu_test.local_action2'), 'My hook_menu action'],
-      [Url::fromRoute('menu_test.local_action3'), 'My YAML discovery action'],
-      [Url::fromRoute('menu_test.local_action5'), 'Title override'],
-    ]);
+    $this->assertLocalAction(array(
+      'menu-test-local-action/dynamic-title' => 'My dynamic-title action',
+      'menu-test-local-action/hook_menu' => 'My hook_menu action',
+      'menu-test-local-action/routing' => 'My YAML discovery action',
+      'menu-test-local-action/routing2' => 'Title override',
+    ));
   }
 
   /**
@@ -47,11 +46,9 @@ class LocalActionTest extends WebTestBase {
       ':class' => 'button-action',
     ));
     $index = 0;
-    foreach ($actions as $action) {
-      /** @var \Drupal\Core\Url $url */
-      list($url, $title) = $action;
+    foreach ($actions as $href => $title) {
       $this->assertEqual((string) $elements[$index], $title);
-      $this->assertEqual($elements[$index]['href'], $url->toString());
+      $this->assertEqual($elements[$index]['href'], _url($href));
       $index++;
     }
   }

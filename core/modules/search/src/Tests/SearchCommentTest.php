@@ -8,7 +8,6 @@
 namespace Drupal\search\Tests;
 
 use Drupal\comment\Plugin\Field\FieldType\CommentItemInterface;
-use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\Component\Utility\String;
 use Drupal\field\Entity\FieldConfig;
 
@@ -18,8 +17,6 @@ use Drupal\field\Entity\FieldConfig;
  * @group search
  */
 class SearchCommentTest extends SearchTestBase {
-
-  use CommentTestTrait;
 
   /**
    * Modules to enable.
@@ -81,7 +78,7 @@ class SearchCommentTest extends SearchTestBase {
     $this->adminUser = $this->drupalCreateUser($permissions);
     $this->drupalLogin($this->adminUser);
     // Add a comment field.
-    $this->addDefaultCommentField('node', 'article');
+    $this->container->get('comment.manager')->addDefaultField('node', 'article');
   }
 
   /**

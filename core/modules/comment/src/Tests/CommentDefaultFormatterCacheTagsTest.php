@@ -19,8 +19,6 @@ use Drupal\system\Tests\Entity\EntityUnitTestBase;
  */
 class CommentDefaultFormatterCacheTagsTest extends EntityUnitTestBase {
 
-  use CommentTestTrait;
-
   /**
    * Modules to install.
    *
@@ -50,7 +48,7 @@ class CommentDefaultFormatterCacheTagsTest extends EntityUnitTestBase {
 
     // Set up a field, so that the entity that'll be referenced bubbles up a
     // cache tag when rendering it entirely.
-    $this->addDefaultCommentField('entity_test', 'entity_test');
+    \Drupal::service('comment.manager')->addDefaultField('entity_test', 'entity_test');
   }
 
   /**

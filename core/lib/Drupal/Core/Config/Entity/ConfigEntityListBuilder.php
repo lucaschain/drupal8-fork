@@ -21,8 +21,7 @@ class ConfigEntityListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function load() {
-    $entity_ids = $this->getEntityIds();
-    $entities = $this->storage->loadMultipleOverrideFree($entity_ids);
+    $entities = $this->storage->loadMultipleOverrideFree();
 
     // Sort the entities using the entity class's sort() method.
     // See \Drupal\Core\Config\Entity\ConfigEntityBase::sort().

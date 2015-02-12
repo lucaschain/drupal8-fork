@@ -1,8 +1,6 @@
 langcode: und
 status: true
-dependencies:
-  content:
-    - entity_test:entity_test:aa0c61cb-b7bb-4795-972a-493dabcf529c
+dependencies: {  }
 id: test_entity_area
 label: ''
 module: views
@@ -23,7 +21,7 @@ display:
           field: entity_entity_test
           id: entity_entity_test
           table: views
-          target: 'aa0c61cb-b7bb-4795-972a-493dabcf529c'
+          entity_id: '1'
           view_mode: full
           plugin_id: entity
       footer:
@@ -31,14 +29,7 @@ display:
           field: entity_entity_test
           id: entity_entity_test
           table: views
-          target: '!1'
-          view_mode: full
-          plugin_id: entity
-        entity_block:
-          field: entity_block
-          id: entity_block
-          table: views
-          target: 'test_block'
+          entity_id: '!1'
           view_mode: full
           plugin_id: entity
       fields:
@@ -58,6 +49,8 @@ display:
         options:
           offset: 0
         type: none
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
     display_plugin: default
     display_title: Master
     id: default

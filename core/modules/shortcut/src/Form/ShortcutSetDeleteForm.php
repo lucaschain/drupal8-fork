@@ -7,7 +7,7 @@
 
 namespace Drupal\shortcut\Form;
 
-use Drupal\Core\Entity\EntityDeleteForm;
+use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\shortcut\ShortcutSetStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,7 +16,7 @@ use Drupal\Core\Database\Connection;
 /**
  * Builds the shortcut set deletion form.
  */
-class ShortcutSetDeleteForm extends EntityDeleteForm {
+class ShortcutSetDeleteForm extends EntityConfirmFormBase {
 
   /**
    * The database connection.
@@ -53,6 +53,27 @@ class ShortcutSetDeleteForm extends EntityDeleteForm {
   /**
    * {@inheritdoc}
    */
+  public function getQuestion() {
+    return t('Are you sure you want to delete the shortcut set %title?', array('%title' => $this->entity->label()));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCancelUrl() {
+    return $this->entity->urlInfo('customize-form');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfirmText() {
+    return t('Delete');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Find out how many users are directly assigned to this shortcut set, and
     // make a message.
@@ -75,6 +96,15 @@ class ShortcutSetDeleteForm extends EntityDeleteForm {
     );
 
     return parent::buildForm($form, $form_state);
-   }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->entity->delete();
+    $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
+    drupal_set_message(t('The shortcut set %title has been deleted.', array('%title' => $this->entity->label())));
+  }
 
 }

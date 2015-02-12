@@ -8,7 +8,6 @@
 namespace Drupal\node\Plugin\views\field;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\node\Plugin\views\field\Link;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\ResultRow;
@@ -57,15 +56,13 @@ class RevisionLink extends Link {
     }
 
     // Current revision uses the node view path.
+    $path = 'node/' . $node->nid;
     if (!$node->isDefaultRevision()) {
-      $url = Url::fromRoute('node.revision_show', ['node' => $node->nid, 'node_revision' => $vid]);
-    }
-    else {
-      $url = $node->urlInfo();
+      $path .= "/revisions/$vid/view";
     }
 
     $this->options['alter']['make_link'] = TRUE;
-    $this->options['alter']['url'] = $url;
+    $this->options['alter']['path'] = $path;
     $this->options['alter']['query'] = drupal_get_destination();
 
     return !empty($this->options['text']) ? $this->options['text'] : $this->t('View');

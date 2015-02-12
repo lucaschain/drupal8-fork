@@ -24,6 +24,8 @@ display:
           relationship: none
           table: views_test_data
           plugin_id: numeric
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
     display_plugin: default
     display_title: Master
     id: default
@@ -31,6 +33,8 @@ display:
   page_1:
     display_options:
       path: test_page_display_403
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
     display_plugin: page
     display_title: Page
     id: page_1
@@ -38,6 +42,8 @@ display:
   page_2:
     display_options:
       path: test_page_display_404
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
     display_plugin: page
     display_title: Page
     id: page_2
@@ -45,6 +51,8 @@ display:
   page_3:
     display_options:
       path: test_page_display_200
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
     display_plugin: page
     display_title: Page
     id: page_3

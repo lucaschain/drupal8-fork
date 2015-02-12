@@ -8,7 +8,6 @@
 namespace Drupal\file\Tests;
 
 use Drupal\comment\Entity\Comment;
-use Drupal\comment\Tests\CommentTestTrait;
 use Drupal\Component\Utility\Html;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field_ui\Tests\FieldUiTestTrait;
@@ -21,23 +20,14 @@ use Drupal\field_ui\Tests\FieldUiTestTrait;
  */
 class FileFieldWidgetTest extends FileFieldTestBase {
 
-  use CommentTestTrait;
   use FieldUiTestTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
-  }
 
   /**
    * Modules to enable.
    *
    * @var array
    */
-  public static $modules = array('comment', 'block');
+  public static $modules = array('comment');
 
   /**
    * Tests upload and remove buttons for a single-valued File field.
@@ -270,7 +260,7 @@ class FileFieldWidgetTest extends FileFieldTestBase {
     user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('post comments', 'skip comment approval'));
 
     // Create a new field.
-    $this->addDefaultCommentField('node', 'article');
+    $this->container->get('comment.manager')->addDefaultField('node', 'article');
 
     $name = strtolower($this->randomMachineName());
     $label = $this->randomMachineName();

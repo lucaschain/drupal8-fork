@@ -75,8 +75,7 @@ class CounterTest extends UnitTestCase {
     $views_data = $this->getMockBuilder('Drupal\views\ViewsData')
       ->disableOriginalConstructor()
       ->getMock();
-    $route_provider = $this->getMock('Drupal\Core\Routing\RouteProviderInterface');
-    $this->view = $this->getMock('Drupal\views\ViewExecutable', NULL, array($storage, $user, $views_data, $route_provider));
+    $this->view = $this->getMock('Drupal\views\ViewExecutable', NULL, array($storage, $user, $views_data));
 
     $this->display = $this->getMockBuilder('Drupal\views\Plugin\views\display\DisplayPluginBase')
       ->disableOriginalConstructor()

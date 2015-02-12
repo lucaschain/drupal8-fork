@@ -17,19 +17,11 @@ namespace Symfony\Component\ClassLoader;
  * It expects an object implementing a findFile method to find the file. This
  * allow using it as a wrapper around the other loaders of the component (the
  * ClassLoader and the UniversalClassLoader for instance) but also around any
- * other autoloaders following this convention (the Composer one for instance).
- *
- *     // with a Symfony autoloader
- *     use Symfony\Component\ClassLoader\ClassLoader;
+ * other autoloader following this convention (the Composer one for instance)
  *
  *     $loader = new ClassLoader();
- *     $loader->addPrefix('Symfony\Component', __DIR__.'/component');
- *     $loader->addPrefix('Symfony',           __DIR__.'/framework');
  *
- *     // or with a Composer autoloader
- *     use Composer\Autoload\ClassLoader;
- *
- *     $loader = new ClassLoader();
+ *     // register classes with namespaces
  *     $loader->add('Symfony\Component', __DIR__.'/component');
  *     $loader->add('Symfony',           __DIR__.'/framework');
  *
@@ -51,9 +43,10 @@ class WinCacheClassLoader
     private $prefix;
 
     /**
-     * A class loader object that implements the findFile() method.
+     * The class loader object being decorated.
      *
-     * @var object
+     * @var \Symfony\Component\ClassLoader\ClassLoader
+     *   A class loader object that implements the findFile() method.
      */
     protected $decorated;
 

@@ -9,6 +9,7 @@ namespace Drupal\language\Entity;
 
 use Drupal\Component\Utility\String;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Config\Entity\ThirdPartySettingsTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\language\ContentLanguageSettingsException;
@@ -28,6 +29,8 @@ use Drupal\language\ContentLanguageSettingsInterface;
  * )
  */
 class ContentLanguageSettings extends ConfigEntityBase implements ContentLanguageSettingsInterface {
+
+  use ThirdPartySettingsTrait;
 
   /**
    * The id. Combination of $target_entity_type_id.$target_bundle.

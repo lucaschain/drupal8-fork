@@ -139,8 +139,6 @@ class FileWidget extends WidgetBase {
     // Add one more empty row for new uploads except when this is a programmed
     // multiple form as it is not necessary.
     if ($empty_single_allowed || $empty_multiple_allowed) {
-      // Create a new empty item.
-      $items->appendItem();
       $element = array(
         '#title' => $title,
         '#description' => $description,
@@ -353,17 +351,13 @@ class FileWidget extends WidgetBase {
     $element['#theme'] = 'file_widget';
 
     // Add the display field if enabled.
-    if ($element['#display_field']) {
+    if ($element['#display_field'] && $item['fids']) {
       $element['display'] = array(
         '#type' => empty($item['fids']) ? 'hidden' : 'checkbox',
         '#title' => t('Include file in display'),
+        '#value' => isset($item['display']) ? $item['display'] : $element['#display_default'],
         '#attributes' => array('class' => array('file-display')),
       );
-      if (isset($item['display'])) {
-        $element['display']['#value'] = $item['display'] ? '1' : '';
-      } else {
-        $element['display']['#value'] = $element['#display_default'];
-      }
     }
     else {
       $element['display'] = array(

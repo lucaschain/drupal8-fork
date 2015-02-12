@@ -66,7 +66,7 @@ abstract class ShortcutTestBase extends WebTestBase {
         'title' => t('Add content'),
         'weight' => -20,
         'link' => array(
-          'uri' => 'user-path:/node/add',
+          'uri' => 'node/add',
         ),
       ));
       $shortcut->save();
@@ -76,14 +76,14 @@ abstract class ShortcutTestBase extends WebTestBase {
         'title' => t('All content'),
         'weight' => -19,
         'link' => array(
-          'uri' => 'user-path:/admin/content',
+          'uri' => 'admin/content',
         ),
       ));
       $shortcut->save();
     }
 
     // Create users.
-    $this->adminUser = $this->drupalCreateUser(array('access toolbar', 'administer shortcuts', 'view the administration theme', 'create article content', 'create page content', 'access content overview', 'administer users', 'link to any page', 'edit any article content'));
+    $this->adminUser = $this->drupalCreateUser(array('access toolbar', 'administer shortcuts', 'view the administration theme', 'create article content', 'create page content', 'access content overview', 'administer users', 'link to any page'));
     $this->shortcutUser = $this->drupalCreateUser(array('customize shortcut links', 'switch shortcut sets', 'access shortcuts', 'access content'));
 
     // Create a node.

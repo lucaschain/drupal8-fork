@@ -24,8 +24,6 @@ use Drupal\user\Entity\Role;
  */
 class CommentFieldAccessTest extends EntityUnitTestBase {
 
-  use CommentTestTrait;
-
   /**
    * Modules to install.
    *
@@ -128,9 +126,11 @@ class CommentFieldAccessTest extends EntityUnitTestBase {
 
     $anonymous_user = new AnonymousUserSession();
 
+    /** @var \Drupal\comment\CommentManagerInterface $manager */
+    $manager = \Drupal::service('comment.manager');
     // Add two fields.
-    $this->addDefaultCommentField('entity_test', 'entity_test', 'comment');
-    $this->addDefaultCommentField('entity_test', 'entity_test', 'comment_other');
+    $manager->addDefaultField('entity_test', 'entity_test', 'comment');
+    $manager->addDefaultField('entity_test', 'entity_test', 'comment_other');
 
     // Change the second field's anonymous contact setting.
     $instance = FieldConfig::loadByName('entity_test', 'entity_test', 'comment_other');

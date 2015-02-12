@@ -134,6 +134,7 @@ class UrlHelper {
    *   - fragment: The fragment component from $url, if it exists.
    *
    * @see \Drupal\Core\Utility\LinkGenerator
+   * @see _url()
    * @see http://tools.ietf.org/html/rfc3986
    *
    * @ingroup php_wrappers
@@ -268,16 +269,6 @@ class UrlHelper {
     // meaning).
     $string = String::decodeEntities($string);
     return String::checkPlain(static::stripDangerousProtocols($string));
-  }
-
-  /**
-   * Gets the allowed protocols.
-   *
-   * @return array
-   *   An array of protocols, for example http, https and irc.
-   */
-  public static function getAllowedProtocols() {
-    return static::$allowedProtocols;
   }
 
   /**

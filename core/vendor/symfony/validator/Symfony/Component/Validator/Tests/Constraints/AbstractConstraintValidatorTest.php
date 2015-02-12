@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Validation;
 
 /**
  * @since  2.5.3
- *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCase
@@ -59,10 +58,6 @@ abstract class AbstractConstraintValidatorTest extends \PHPUnit_Framework_TestCa
 
     protected function setUp()
     {
-        if (Validation::API_VERSION_2_5 !== $this->getApiVersion()) {
-            $this->iniSet('error_reporting', -1 & ~E_USER_DEPRECATED);
-        }
-
         $this->group = 'MyGroup';
         $this->metadata = null;
         $this->object = null;

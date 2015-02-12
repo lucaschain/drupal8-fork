@@ -57,8 +57,6 @@ namespace Symfony\Component\ClassLoader;
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @api
- *
- * @deprecated Deprecated since version 2.4, to be removed in 3.0. Use the ClassLoader class instead.
  */
 class UniversalClassLoader
 {
@@ -70,7 +68,7 @@ class UniversalClassLoader
 
     /**
      * Turns on searching the include for class files. Allows easy loading
-     * of installed PEAR packages.
+     * of installed PEAR packages
      *
      * @param bool $useIncludePath
      */
@@ -175,7 +173,7 @@ class UniversalClassLoader
     }
 
     /**
-     * Registers an array of namespaces.
+     * Registers an array of namespaces
      *
      * @param array $namespaces An array of namespaces (namespaces as keys and locations as values)
      *

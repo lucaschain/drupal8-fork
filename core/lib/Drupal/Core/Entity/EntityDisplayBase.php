@@ -8,6 +8,7 @@
 namespace Drupal\Core\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Config\Entity\ThirdPartySettingsTrait;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\field\Entity\FieldConfig;
@@ -18,6 +19,8 @@ use Drupal\Component\Utility\String;
  * Provides a common base class for entity view and form displays.
  */
 abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDisplayInterface {
+
+  use ThirdPartySettingsTrait;
 
   /**
    * The 'mode' for runtime EntityDisplay objects used to render entities with
@@ -33,21 +36,21 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    *
    * @var string
    */
-  protected $id;
+  public $id;
 
   /**
    * Entity type to be displayed.
    *
    * @var string
    */
-  protected $targetEntityType;
+  public $targetEntityType;
 
   /**
    * Bundle to be displayed.
    *
    * @var string
    */
-  protected $bundle;
+  public $bundle;
 
   /**
    * A list of field definitions eligible for configuration in this display.
@@ -61,7 +64,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    *
    * @var string
    */
-  protected $mode = self::CUSTOM_MODE;
+  public $mode = self::CUSTOM_MODE;
 
   /**
    * Whether this display is enabled or not. If the entity (form) display
@@ -91,7 +94,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    *
    * @var string
    */
-  protected $originalMode;
+  public $originalMode;
 
   /**
    * The plugin objects used for this display, keyed by field name.
@@ -123,7 +126,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
     }
 
     if (!$this->entityManager()->getDefinition($values['targetEntityType'])->isSubclassOf('\Drupal\Core\Entity\FieldableEntityInterface')) {
-      throw new \InvalidArgumentException('EntityDisplay entities can only handle fieldable entity types.');
+      throw new \InvalidArgumentException('EntityDisplay entities can only handle content entity types.');
     }
 
     // A plugin manager and a context type needs to be set by extending classes.
@@ -139,91 +142,6 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
     $this->originalMode = $this->mode;
 
     $this->init();
-  }
-
-  /**
-   * Initializes the display.
-   *
-   * This fills in default options for components:
-   * - that are not explicitly known as either "visible" or "hidden" in the
-   *   display,
-   * - or that are not supposed to be configurable.
-   */
-  protected function init() {
-    // Only populate defaults for "official" view modes and form modes.
-    if ($this->mode !== static::CUSTOM_MODE) {
-      // Fill in defaults for extra fields.
-      $context = $this->displayContext == 'view' ? 'display' : $this->displayContext;
-      $extra_fields = \Drupal::entityManager()->getExtraFields($this->targetEntityType, $this->bundle);
-      $extra_fields = isset($extra_fields[$context]) ? $extra_fields[$context] : array();
-      foreach ($extra_fields as $name => $definition) {
-        if (!isset($this->content[$name]) && !isset($this->hidden[$name])) {
-          // Extra fields are visible by default unless they explicitly say so.
-          if (!isset($definition['visible']) || $definition['visible'] == TRUE) {
-            $this->content[$name] = array(
-              'weight' => $definition['weight']
-            );
-          }
-          else {
-            $this->hidden[$name] = TRUE;
-          }
-        }
-      }
-
-      // Fill in defaults for fields.
-      $fields = $this->getFieldDefinitions();
-      foreach ($fields as $name => $definition) {
-        if (!$definition->isDisplayConfigurable($this->displayContext) || (!isset($this->content[$name]) && !isset($this->hidden[$name]))) {
-          $options = $definition->getDisplayOptions($this->displayContext);
-
-          if (!empty($options['type']) && $options['type'] == 'hidden') {
-            $this->hidden[$name] = TRUE;
-          }
-          elseif ($options) {
-            $this->content[$name] = $this->pluginManager->prepareConfiguration($definition->getType(), $options);
-          }
-          // Note: (base) fields that do not specify display options are not
-          // tracked in the display at all, in order to avoid cluttering the
-          // configuration that gets saved back.
-        }
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTargetEntityTypeId() {
-    return $this->targetEntityType;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getMode() {
-    return $this->get('mode');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOriginalMode() {
-    return $this->get('originalMode');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTargetBundle() {
-    return $this->bundle;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setTargetBundle($bundle) {
-    $this->set('bundle', $bundle);
-    return $this;
   }
 
   /**
@@ -293,6 +211,55 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
     }
 
     return $properties;
+  }
+
+  /**
+   * Initializes the display.
+   *
+   * This fills in default options for components:
+   * - that are not explicitly known as either "visible" or "hidden" in the
+   *   display,
+   * - or that are not supposed to be configurable.
+   */
+  protected function init() {
+    // Only populate defaults for "official" view modes and form modes.
+    if ($this->mode !== static::CUSTOM_MODE) {
+      // Fill in defaults for extra fields.
+      $context = $this->displayContext == 'view' ? 'display' : $this->displayContext;
+      $extra_fields = \Drupal::entityManager()->getExtraFields($this->targetEntityType, $this->bundle);
+      $extra_fields = isset($extra_fields[$context]) ? $extra_fields[$context] : array();
+      foreach ($extra_fields as $name => $definition) {
+        if (!isset($this->content[$name]) && !isset($this->hidden[$name])) {
+          // Extra fields are visible by default unless they explicitly say so.
+          if (!isset($definition['visible']) || $definition['visible'] == TRUE) {
+            $this->content[$name] = array(
+              'weight' => $definition['weight']
+            );
+          }
+          else {
+            $this->hidden[$name] = TRUE;
+          }
+        }
+      }
+
+      // Fill in defaults for fields.
+      $fields = $this->getFieldDefinitions();
+      foreach ($fields as $name => $definition) {
+        if (!$definition->isDisplayConfigurable($this->displayContext) || (!isset($this->content[$name]) && !isset($this->hidden[$name]))) {
+          $options = $definition->getDisplayOptions($this->displayContext);
+
+          if (!empty($options['type']) && $options['type'] == 'hidden') {
+            $this->hidden[$name] = TRUE;
+          }
+          elseif ($options) {
+            $this->content[$name] = $this->pluginManager->prepareConfiguration($definition->getType(), $options);
+          }
+          // Note: (base) fields that do not specify display options are not
+          // tracked in the display at all, in order to avoid cluttering the
+          // configuration that gets saved back.
+        }
+      }
+    }
   }
 
   /**
@@ -385,6 +352,12 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    * Returns the definitions of the fields that are candidate for display.
    */
   protected function getFieldDefinitions() {
+    // Entity displays are sometimes created for non-content entities.
+    // @todo Prevent this in https://drupal.org/node/2095195.
+    if (!\Drupal::entityManager()->getDefinition($this->targetEntityType)->isSubclassOf('\Drupal\Core\Entity\FieldableEntityInterface')) {
+      return array();
+    }
+
     if (!isset($this->fieldDefinitions)) {
       $definitions = \Drupal::entityManager()->getFieldDefinitions($this->targetEntityType, $this->bundle);
       // For "official" view modes and form modes, ignore fields whose
@@ -415,7 +388,7 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    * {@inheritdoc}
    */
   public function onDependencyRemoval(array $dependencies) {
-    $changed = parent::onDependencyRemoval($dependencies);
+    $changed = FALSE;
     foreach ($dependencies['config'] as $entity) {
       if ($entity instanceof FieldConfigInterface) {
         // Remove components for fields that are being deleted.
@@ -434,7 +407,9 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
         }
       }
     }
-    return $changed;
+    if ($changed) {
+      $this->save();
+    }
   }
 
   /**
@@ -443,14 +418,8 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
   public function __sleep() {
     // Only store the definition, not external objects or derived data.
     $keys = array_keys($this->toArray());
-    // In addition, we need to keep the entity type and the "is new" status.
     $keys[] = 'entityTypeId';
     $keys[] = 'enforceIsNew';
-    // Keep track of the serialized keys, to avoid calling toArray() again in
-    // __wakeup(). Because of the way __sleep() works, the data has to be
-    // present in the object to be included in the serialized values.
-    $keys[] = '_serializedKeys';
-    $this->_serializedKeys = $keys;
     return $keys;
   }
 
@@ -458,14 +427,9 @@ abstract class EntityDisplayBase extends ConfigEntityBase implements EntityDispl
    * {@inheritdoc}
    */
   public function __wakeup() {
+    // Run the values from self::toArray() through __construct().
+    $values = array_intersect_key($this->toArray(), get_object_vars($this));
     $is_new = $this->isNew();
-    // Determine what were the properties from toArray() that were saved in
-    // __sleep().
-    $keys = $this->_serializedKeys;
-    unset($this->_serializedKeys);
-    $values = array_intersect_key(get_object_vars($this), array_flip($keys));
-    // Run those values through the __construct(), as if they came from a
-    // regular entity load.
     $this->__construct($values, $this->entityTypeId);
     $this->enforceIsNew($is_new);
   }

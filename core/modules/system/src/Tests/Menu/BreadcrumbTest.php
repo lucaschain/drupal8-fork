@@ -7,7 +7,8 @@
 
 namespace Drupal\system\Tests\Menu;
 
-use Drupal\Core\Url;
+use Drupal\Component\Utility\String;
+use Drupal\Component\Utility\Unicode;
 use Drupal\node\Entity\NodeType;
 
 /**
@@ -187,7 +188,7 @@ class BreadcrumbTest extends MenuTestBase {
     $menu = 'tools';
     $edit = array(
       'title[0][value]' => 'Root',
-      'link[0][uri]' => '/node',
+      'url' => 'node',
     );
     $this->drupalPostForm("admin/structure/menu/manage/$menu/add", $edit, t('Save'));
     $menu_links = entity_load_multiple_by_properties('menu_link_content', array('title' => 'Root'));
@@ -240,14 +241,15 @@ class BreadcrumbTest extends MenuTestBase {
       $term = $data['term'];
       $edit = array(
         'title[0][value]' => "$name link",
-        'link[0][uri]' => "/taxonomy/term/{$term->id()}",
+        'url' => "taxonomy/term/{$term->id()}",
         'menu_parent' => "$menu:{$parent_mlid}",
         'enabled[value]' => 1,
       );
       $this->drupalPostForm("admin/structure/menu/manage/$menu/add", $edit, t('Save'));
       $menu_links = entity_load_multiple_by_properties('menu_link_content', array(
         'title' => $edit['title[0][value]'],
-        'link.uri' => 'user-path:/taxonomy/term/' . $term->id(),
+        'route_name' => 'entity.taxonomy_term.canonical',
+        'route_parameters' => serialize(array('taxonomy_term' => $term->id())),
       ));
       $tags[$name]['link'] = reset($menu_links);
       $parent_mlid = $tags[$name]['link']->getPluginId();
@@ -277,7 +279,7 @@ class BreadcrumbTest extends MenuTestBase {
       // other than the breadcrumb trail.
       $elements = $this->xpath('//nav[@id=:menu]/descendant::a[@href=:href]', array(
         ':menu' => 'block-bartik-tools',
-        ':href' => Url::fromUri('base:' . $link_path)->toString(),
+        ':href' => _url($link_path),
       ));
       $this->assertTrue(count($elements) == 1, "Link to {$link_path} appears only once.");
 

@@ -9,9 +9,7 @@ namespace Drupal\rest\Tests;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\node\NodeInterface;
 use Drupal\simpletest\WebTestBase;
-use Drupal\user\UserInterface;
 
 /**
  * Test helper class that provides a REST client method to send HTTP requests.
@@ -66,16 +64,13 @@ abstract class RESTTestBase extends WebTestBase {
    * Helper function to issue a HTTP request with simpletest's cURL.
    *
    * @param string|\Drupal\Core\Url $url
-   *   A Url object or system path.
+   *   A relative URL string or a Url object.
    * @param string $method
    *   HTTP method, one of GET, POST, PUT or DELETE.
-   * @param string $body
+   * @param array $body
    *   The body for POST and PUT.
    * @param string $mime_type
    *   The MIME type of the transmitted content.
-   *
-   * @return string
-   *   The content returned from the request.
    */
   protected function httpRequest($url, $method, $body = NULL, $mime_type = NULL) {
     if (!isset($mime_type)) {
@@ -86,7 +81,13 @@ abstract class RESTTestBase extends WebTestBase {
       $token = $this->drupalGet('rest/session/token');
     }
 
-    $url = $this->buildUrl($url);
+    // Convert to absolute URL.
+    if ($url instanceof Url) {
+      $url = $url->setAbsolute()->toString();
+    }
+    else {
+      $url = _url($url, array('absolute' => TRUE));
+    }
 
     switch ($method) {
       case 'GET':
@@ -348,27 +349,6 @@ abstract class RESTTestBase extends WebTestBase {
     $url_parts = explode('/', $location_url);
     $id = end($url_parts);
     return entity_load($this->testEntityType, $id);
-  }
-
-  /**
-   * Remove node fields that can only be written by an admin user.
-   *
-   * @param \Drupal\node\NodeInterface $node
-   *   The node to remove fields where non-administrative users cannot write.
-   *
-   * @return \Drupal\node\NodeInterface
-   *   The node with removed fields.
-   */
-  protected function removeNodeFieldsForNonAdminUsers(NodeInterface $node) {
-    $node->set('status', NULL);
-    $node->set('created', NULL);
-    $node->set('changed', NULL);
-    $node->set('promote', NULL);
-    $node->set('sticky', NULL);
-    $node->set('revision_timestamp', NULL);
-    $node->set('uid', NULL);
-
-    return $node;
   }
 
 }

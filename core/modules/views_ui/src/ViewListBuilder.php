@@ -186,10 +186,9 @@ class ViewListBuilder extends ConfigEntityListBuilder {
 
     $list['filters']['text'] = array(
       '#type' => 'search',
-      '#title' => $this->t('Filter'),
-      '#title_display' => 'invisible',
-      '#size' => 40,
-      '#placeholder' => $this->t('Filter by view name or description'),
+      '#title' => $this->t('Search'),
+      '#size' => 30,
+      '#placeholder' => $this->t('Enter view name'),
       '#attributes' => array(
         'class' => array('views-filter-text'),
         'data-table' => '.views-listing-table',
@@ -264,7 +263,7 @@ class ViewListBuilder extends ConfigEntityListBuilder {
       if ($display->hasPath()) {
         $path = $display->getPath();
         if ($view->status() && strpos($path, '%') === FALSE) {
-          $all_paths[] = \Drupal::l('/' . $path, Url::fromUri('user-path:/' . $path));
+          $all_paths[] = \Drupal::l('/' . $path, Url::fromUri('base://' . $path));
         }
         else {
           $all_paths[] = String::checkPlain('/' . $path);

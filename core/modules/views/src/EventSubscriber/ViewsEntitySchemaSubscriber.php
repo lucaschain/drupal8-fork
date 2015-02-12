@@ -99,6 +99,12 @@ class ViewsEntitySchemaSubscriber implements EntityTypeListenerInterface, EventS
   /**
    * {@inheritdoc}
    */
+  public function onEntityTypeCreate(EntityTypeInterface $entity_type) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function onEntityTypeUpdate(EntityTypeInterface $entity_type, EntityTypeInterface $original) {
     $changes = [];
 

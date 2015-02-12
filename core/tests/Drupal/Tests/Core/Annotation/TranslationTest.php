@@ -31,7 +31,7 @@ class TranslationTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::get
+   * @covers \Drupal\Core\Annotation\Translation::get
    *
    * @dataProvider providerTestGet
    */

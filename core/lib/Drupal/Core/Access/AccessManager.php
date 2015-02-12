@@ -87,9 +87,8 @@ class AccessManager implements AccessManagerInterface {
     try {
       $route = $this->routeProvider->getRouteByName($route_name, $parameters);
 
-      // ParamConverterManager relies on the route name and object being
-      // available from the parameters array.
-      $parameters[RouteObjectInterface::ROUTE_NAME] = $route_name;
+      // ParamConverterManager relies on the route object being available
+      // from the parameters array.
       $parameters[RouteObjectInterface::ROUTE_OBJECT] = $route;
       $upcasted_parameters = $this->paramConverterManager->convert($parameters + $route->getDefaults());
 

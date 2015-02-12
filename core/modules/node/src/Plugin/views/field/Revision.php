@@ -8,7 +8,6 @@
 namespace Drupal\node\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\views\ResultRow;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
@@ -69,7 +68,7 @@ class Revision extends Node {
       $this->options['alter']['make_link'] = TRUE;
       $nid = $this->getValue($values, 'nid');
       $vid = $this->getValue($values, 'vid');
-      $this->options['alter']['url'] = Url::fromRoute('node.revision_show', ['node' => $nid, 'node_revision' => $vid]);
+      $this->options['alter']['path'] = "node/" . $nid . '/revisions/' . $vid . '/view';
     }
     else {
       return parent::renderLink($data, $values);

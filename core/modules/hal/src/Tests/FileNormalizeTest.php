@@ -39,8 +39,7 @@ class FileNormalizeTest extends NormalizerTestBase {
     $this->installEntitySchema('file');
 
     $entity_manager = \Drupal::entityManager();
-    $url_assembler = \Drupal::service('unrouted_url_assembler');
-    $link_manager = new LinkManager(new TypeLinkManager(new MemoryBackend('default'), $url_assembler), new RelationLinkManager(new MemoryBackend('default'), $entity_manager, $url_assembler));
+    $link_manager = new LinkManager(new TypeLinkManager(new MemoryBackend('default')), new RelationLinkManager(new MemoryBackend('default'), $entity_manager));
 
     // Set up the mock serializer.
     $normalizers = array(

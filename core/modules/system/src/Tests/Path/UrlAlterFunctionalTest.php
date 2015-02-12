@@ -78,9 +78,9 @@ class UrlAlterFunctionalTest extends WebTestBase {
    * Assert that an outbound path is altered to an expected value.
    *
    * @param $original
-   *   A string with the original path that is run through generateFrommPath().
+   *   A string with the original path that is run through _url().
    * @param $final
-   *   A string with the expected result after generateFrommPath().
+   *   A string with the expected result after _url().
    * @return
    *   TRUE if $original was correctly altered to $final, FALSE otherwise.
    */
@@ -98,7 +98,7 @@ class UrlAlterFunctionalTest extends WebTestBase {
    * @param $original
    *   The original path before it has been altered by inbound URL processing.
    * @param $final
-   *   A string with the expected result.
+   *   A string with the expected result after _url().
    * @return
    *   TRUE if $original was correctly altered to $final, FALSE otherwise.
    */

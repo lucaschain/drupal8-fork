@@ -429,15 +429,4 @@ interface EntityInterface extends AccessibleInterface {
    */
   public function getConfigDependencyName();
 
-  /**
-   * Gets the configuration target identifier for the entity.
-   *
-   * Used to supply the correct format for storing a reference targeting this
-   * entity in configuration.
-   *
-   * @return string
-   *   The configuration target identifier.
-   */
-  public function getConfigTarget();
-
 }

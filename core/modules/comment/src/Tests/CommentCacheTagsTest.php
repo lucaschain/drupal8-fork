@@ -20,8 +20,6 @@ use Drupal\user\Entity\Role;
  */
 class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
 
-  use CommentTestTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -49,7 +47,7 @@ class CommentCacheTagsTest extends EntityWithUriCacheTagsTestBase {
     entity_test_create_bundle($bundle, NULL, 'entity_test');
 
     // Create a comment field on this bundle.
-    $this->addDefaultCommentField('entity_test', 'bar', 'comment');
+    \Drupal::service('comment.manager')->addDefaultField('entity_test', 'bar', 'comment');
 
     // Display comments in a flat list; threaded comments are not render cached.
     $field = FieldConfig::loadByName('entity_test', 'bar', 'comment');

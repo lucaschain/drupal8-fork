@@ -109,9 +109,6 @@ class PathValidator implements PathValidatorInterface {
     if ($parsed_url['path'] == '<front>') {
       return new Url('<front>', [], $options);
     }
-    elseif ($parsed_url['path'] == '<none>') {
-      return new Url('<none>', [], $options);
-    }
     elseif (UrlHelper::isExternal($path) && UrlHelper::isValid($path)) {
       if (empty($parsed_url['path'])) {
         return FALSE;

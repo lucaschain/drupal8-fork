@@ -86,14 +86,14 @@ class MigrateVocabularyFieldInstanceTest extends MigrateDrupalTestBase {
     // Test that the field exists.
     $field_id = 'node.article.tags';
     $field = FieldConfig::load($field_id);
-    $this->assertIdentical($field->id(), $field_id, 'Field instance exists on article bundle.');
+    $this->assertEqual($field->id(), $field_id, 'Field instance exists on article bundle.');
 
     // Test the page bundle as well.
     $field_id = 'node.page.tags';
     $field = FieldConfig::load($field_id);
-    $this->assertIdentical($field->id(), $field_id, 'Field instance exists on page bundle.');
+    $this->assertEqual($field->id(), $field_id, 'Field instance exists on page bundle.');
 
-    $this->assertIdentical(array('node', 'article', 'tags'), entity_load('migration', 'd6_vocabulary_field_instance')->getIdMap()->lookupDestinationID(array(4, 'article')));
+    $this->assertEqual(array('node', 'article', 'tags'), entity_load('migration', 'd6_vocabulary_field_instance')->getIdMap()->lookupDestinationID(array(4, 'article')));
   }
 
 }

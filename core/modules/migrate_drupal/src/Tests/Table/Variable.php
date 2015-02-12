@@ -394,12 +394,6 @@ class Variable extends Drupal6DumpBase {
       'name' => 'dblog_row_limit',
       'value' => 'i:1000;',
     ))->values(array(
-      'name' => 'drupal_badge_color',
-      'value' => 's:12:"powered-blue";',
-    ))->values(array(
-      'name' => 'drupal_badge_size',
-      'value' => 's:5:"80x15";',
-    ))->values(array(
       'name' => 'drupal_http_request_fails',
       'value' => 'b:0;',
     ))->values(array(
@@ -660,15 +654,6 @@ class Variable extends Drupal6DumpBase {
     ))->values(array(
       'name' => 'upload_story',
       'value' => 'b:1;',
-    ))->values(array(
-      'name' => 'user_block_max_list_count',
-      'value' => 's:2:"10";',
-    ))->values(array(
-      'name' => 'user_block_seconds_online',
-      'value' => 's:3:"900";',
-    ))->values(array(
-      'name' => 'user_block_whois_new_count',
-      'value' => 's:1:"5";',
     ))->values(array(
       'name' => 'user_email_verification',
       'value' => 'i:0;',

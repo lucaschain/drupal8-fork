@@ -12,11 +12,11 @@
 namespace Symfony\Component\Validator\Mapping\Loader;
 
 /**
- * Loads multiple yaml mapping files.
+ * Loads multiple yaml mapping files
  *
  * @author Bulat Shakirzyanov <mallluhuct@gmail.com>
  *
- * @see FilesLoader
+ * @see    Symfony\Component\Validator\Mapping\Loader\FilesLoader
  */
 class YamlFilesLoader extends FilesLoader
 {

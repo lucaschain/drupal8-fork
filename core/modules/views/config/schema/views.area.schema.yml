@@ -8,9 +8,9 @@ views.area.entity:
   type: views_area
   label: 'Entity'
   mapping:
-    target:
+    entity_id:
       type: string
-      label: 'The target entity'
+      label: 'ID'
     view_mode:
       type: string
       label: 'View mode'

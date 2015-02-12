@@ -9,6 +9,7 @@ namespace Drupal\contact\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\contact\ContactFormInterface;
+use Drupal\Core\Config\Entity\ThirdPartySettingsTrait;
 
 /**
  * Defines the contact form entity.
@@ -22,7 +23,7 @@ use Drupal\contact\ContactFormInterface;
  *     "form" = {
  *       "add" = "Drupal\contact\ContactFormEditForm",
  *       "edit" = "Drupal\contact\ContactFormEditForm",
- *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
+ *       "delete" = "Drupal\contact\Form\ContactFormDeleteForm"
  *     }
  *   },
  *   config_prefix = "form",
@@ -40,6 +41,8 @@ use Drupal\contact\ContactFormInterface;
  * )
  */
 class ContactForm extends ConfigEntityBundleBase implements ContactFormInterface {
+
+  use ThirdPartySettingsTrait;
 
   /**
    * The form ID.

@@ -9,7 +9,6 @@ namespace Drupal\views\Plugin\views\style;
 
 use Drupal\Component\Utility\SafeMarkup;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 
 /**
  * Default style plugin to render an RSS feed.
@@ -33,7 +32,7 @@ class Rss extends StylePluginBase {
    */
   protected $usesRowPlugin = TRUE;
 
-  public function attachTo(array &$build, $display_id, Url $feed_url, $title) {
+  public function attachTo(array &$build, $display_id, $path, $title) {
     $url_options = array();
     $input = $this->view->getExposedInput();
     if ($input) {
@@ -41,7 +40,7 @@ class Rss extends StylePluginBase {
     }
     $url_options['absolute'] = TRUE;
 
-    $url = $feed_url->setOptions($url_options)->toString();
+    $url = _url($this->view->getUrl(NULL, $path), $url_options);
 
     // Add the RSS icon to the view.
     $this->view->feedIcons[] = [

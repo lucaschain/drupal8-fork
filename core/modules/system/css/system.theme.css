@@ -169,7 +169,9 @@ abbr.ajax-changed {
   text-align: center;
 }
 .pager__item {
+  background-image: none;
   display: inline;
+  list-style-type: none;
   padding: 0.5em;
 }
 .pager__item.is-active {
@@ -190,6 +192,18 @@ button.link {
 
 label button.link {
   font-weight: bold;
+}
+
+/*
+ * Autocomplete.
+ *
+ * @see autocomplete.js
+ */
+/* Suggestion list */
+.ui-autocomplete li.ui-menu-item a.ui-state-focus, .autocomplete li.ui-menu-item a.ui-state-hover {
+  background: #0072b9;
+  color: #fff;
+  margin: 0;
 }
 
 /**

@@ -56,6 +56,8 @@ display:
           field: wid
           order: ASC
           plugin_id: standard
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null
   page_1:
     display_plugin: page
     id: page_1
@@ -63,3 +65,5 @@ display:
     position: null
     display_options:
       path: test-dblog
+      field_langcode: '***LANGUAGE_language_content***'
+      field_langcode_add_to_query: null

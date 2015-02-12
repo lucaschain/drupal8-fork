@@ -60,7 +60,6 @@
     this.changed = false; // Whether anything in the entire table has changed.
     this.maxDepth = 0; // Maximum amount of allowed parenting.
     this.rtl = $(this.table).css('direction') === 'rtl' ? -1 : 1; // Direction of the table.
-    this.striping = $(this.table).data('striping') === 1;
 
     // Configure the scroll settings.
     this.scrollSettings = {amount: 4, interval: 50, trigger: 70};
@@ -460,9 +459,7 @@
           $(self.oldRowElement).removeClass('drag-previous');
         }
         self.oldRowElement = item;
-        if (self.striping === true) {
-          self.restripeTable();
-        }
+        self.restripeTable();
         self.onDrag();
       }
 
@@ -559,9 +556,7 @@
           else {
             self.rowObject.swap('before', currentRow, self);
           }
-          if (self.striping === true) {
-            self.restripeTable();
-          }
+          self.restripeTable();
         }
       }
 

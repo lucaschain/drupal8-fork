@@ -50,7 +50,7 @@ class UserData extends FieldPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Overrides \Drupal\views\Plugin\views\field\FieldPluginBase::defineOptions().
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
@@ -62,7 +62,7 @@ class UserData extends FieldPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Overrides \Drupal\views\Plugin\views\field\FieldPluginBase::defineOptions().
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);

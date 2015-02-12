@@ -8,7 +8,7 @@
 namespace Drupal\menu_ui\Form;
 
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityDeleteForm;
+use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Menu\MenuLinkManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Defines a confirmation form for deletion of a custom menu.
  */
-class MenuDeleteForm extends EntityDeleteForm {
+class MenuDeleteForm extends EntityConfirmFormBase {
 
   /**
    * The menu link manager.
@@ -58,6 +58,20 @@ class MenuDeleteForm extends EntityDeleteForm {
   /**
    * {@inheritdoc}
    */
+  public function getQuestion() {
+    return t('Are you sure you want to delete the custom menu %title?', array('%title' => $this->entity->label()));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCancelUrl() {
+    return $this->entity->urlInfo('edit-form');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDescription() {
     $caption = '';
     $num_links = $this->menuLinkManager->countMenuLinks($this->entity->id());
@@ -71,14 +85,16 @@ class MenuDeleteForm extends EntityDeleteForm {
   /**
    * {@inheritdoc}
    */
-  protected function logDeletionMessage() {
-    $this->logger('menu')->notice('Deleted custom menu %title and all its menu links.', array('%title' => $this->entity->label()));
+  public function getConfirmText() {
+    return t('Delete');
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $form_state->setRedirectUrl($this->entity->urlInfo('collection'));
+
     // Locked menus may not be deleted.
     if ($this->entity->isLocked()) {
       return;
@@ -95,6 +111,11 @@ class MenuDeleteForm extends EntityDeleteForm {
       $this->menuLinkManager->removeDefinition($id);
     }
 
-    parent::submitForm($form, $form_state);
+    // Delete the custom menu and all its menu links.
+    $this->entity->delete();
+
+    $t_args = array('%title' => $this->entity->label());
+    drupal_set_message(t('The custom menu %title has been deleted.', $t_args));
+    $this->logger('menu')->notice('Deleted custom menu %title and all its menu links.', $t_args);
   }
 }

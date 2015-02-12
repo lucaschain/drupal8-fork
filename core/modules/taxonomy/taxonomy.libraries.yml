@@ -4,7 +4,7 @@ drupal.taxonomy:
     taxonomy.js: {}
   css:
     component:
-      css/taxonomy.theme.css: {}
+      css/taxonomy.module.css: {}
   dependencies:
     - core/jquery
     - core/drupal

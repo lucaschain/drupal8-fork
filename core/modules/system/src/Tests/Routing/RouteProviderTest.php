@@ -50,7 +50,6 @@ class RouteProviderTest extends KernelTestBase {
   protected $state;
 
   protected function setUp() {
-    parent::setUp();
     $this->fixtures = new RoutingFixtures();
     $this->routeBuilder = new NullRouteBuilder();
     $this->state = new State(new KeyValueMemoryFactory());

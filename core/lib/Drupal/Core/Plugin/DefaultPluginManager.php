@@ -224,7 +224,9 @@ class DefaultPluginManager extends PluginManagerBase implements PluginManagerInt
     foreach ($definitions as $plugin_id => &$definition) {
       $this->processDefinition($definition, $plugin_id);
     }
-    $this->alterDefinitions($definitions);
+    if ($this->alterHook) {
+      $this->moduleHandler->alter($this->alterHook, $definitions);
+    }
     // If this plugin was provided by a module that does not exist, remove the
     // plugin definition.
     foreach ($definitions as $plugin_id => $plugin_definition) {
@@ -238,18 +240,6 @@ class DefaultPluginManager extends PluginManagerBase implements PluginManagerInt
       }
     }
     return $definitions;
-  }
-
-  /**
-   * Invokes the hook to alter the definitions if the alter hook is set.
-   *
-   * @param $definitions
-   *   The discovered plugin defintions.
-   */
-  protected function alterDefinitions(&$definitions) {
-    if ($this->alterHook) {
-      $this->moduleHandler->alter($this->alterHook, $definitions);
-    }
   }
 
 }

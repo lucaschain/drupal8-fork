@@ -8,8 +8,8 @@ id: node.page.promote
 field_name: promote
 entity_type: node
 bundle: page
-label: Promoted to front page
-description: ''
+label: Promote
+description: 'A boolean indicating whether the node should be displayed on the front page.'
 required: false
 translatable: true
 default_value:

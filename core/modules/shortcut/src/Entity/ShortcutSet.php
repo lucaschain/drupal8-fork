@@ -117,9 +117,7 @@ class ShortcutSet extends ConfigEntityBase implements ShortcutSetInterface {
    * {@inheritdoc}
    */
   public function getShortcuts() {
-    $shortcuts = \Drupal::entityManager()->getStorage('shortcut')->loadByProperties(array('shortcut_set' => $this->id()));
-    uasort($shortcuts, array('\Drupal\shortcut\Entity\Shortcut', 'sort'));
-    return $shortcuts;
+    return \Drupal::entityManager()->getStorage('shortcut')->loadByProperties(array('shortcut_set' => $this->id()));
   }
 
 }

@@ -25,16 +25,12 @@ class LinkFieldUITest extends WebTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'link', 'field_ui', 'block'];
+  public static $modules = ['node', 'link', 'field_ui'];
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
 
     $this->drupalLogin($this->drupalCreateUser(['administer content types', 'administer node fields', 'administer node display']));
-    $this->drupalPlaceBlock('system_breadcrumb_block');
   }
 
   /**

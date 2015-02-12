@@ -8,7 +8,6 @@
 namespace Drupal\views\Tests\Plugin;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Url;
 use Drupal\views\Tests\ViewTestBase;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -136,8 +135,7 @@ class ExposedFormTest extends ViewTestBase {
 
     $this->assertFieldByXpath('//form/@id', $this->getExpectedExposedFormId($view), 'Expected form ID found.');
 
-    $view->setDisplay('page_1');
-    $expected_action = $view->display_handler->getUrlInfo()->toString();
+    $expected_action = _url($view->display_handler->getUrl());
     $this->assertFieldByXPath('//form/@action', $expected_action, 'The expected value for the action attribute was found.');
     // Make sure the description is shown.
     $result = $this->xpath('//form//div[contains(@id, :id) and normalize-space(text())=:description]', array(':id' => 'edit-type--description', ':description' => t('Exposed description')));

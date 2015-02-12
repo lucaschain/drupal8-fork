@@ -7,13 +7,20 @@
 
 namespace Drupal\comment\Form;
 
-use Drupal\Core\Entity\ContentEntityDeleteForm;
+use Drupal\Core\Entity\ContentEntityConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides the comment delete confirmation form.
  */
-class DeleteForm extends ContentEntityDeleteForm {
+class DeleteForm extends ContentEntityConfirmFormBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getQuestion() {
+    return $this->t('Are you sure you want to delete the comment %title?', array('%title' => $this->entity->subject->value));
+  }
 
   /**
    * {@inheritdoc}
@@ -33,15 +40,20 @@ class DeleteForm extends ContentEntityDeleteForm {
   /**
    * {@inheritdoc}
    */
-  protected function getDeletionMessage() {
-    return $this->t('The comment and all its replies have been deleted.');
+  public function getConfirmText() {
+    return $this->t('Delete');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function logDeletionMessage() {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Delete the comment and its replies.
+    $this->entity->delete();
+    drupal_set_message($this->t('The comment and all its replies have been deleted.'));
     $this->logger('content')->notice('Deleted comment @cid and its replies.', array('@cid' => $this->entity->id()));
+
+    $form_state->setRedirectUrl($this->getCancelUrl());
   }
 
 }

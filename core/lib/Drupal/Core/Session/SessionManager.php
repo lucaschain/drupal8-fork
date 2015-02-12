@@ -9,6 +9,8 @@ namespace Drupal\Core\Session;
 
 use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\Core\Session\SessionHandler;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\WriteCheckSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -61,16 +63,15 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
   protected $startedLazy;
 
   /**
-   * The write safe session handler.
+   * Whether session management is enabled or temporarily disabled.
    *
-   * @todo: The write safe session handler should be exposed in the
-   *   container and this reference should be removed once all database queries
-   *   are removed from the session manager class.
-   * @see https://www.drupal.org/node/2372389
+   * PHP session ID, session, and cookie handling happens in the global scope.
+   * This value has to persist, since a potentially wrong or disallowed session
+   * would be written otherwise.
    *
-   * @var \Drupal\Core\Session\WriteSafeSessionHandlerInterface
+   * @var bool
    */
-  protected $writeSafeHandler;
+  protected static $enabled = TRUE;
 
   /**
    * Constructs a new session manager instance.
@@ -92,11 +93,11 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
 
     // Register the default session handler.
     // @todo Extract session storage from session handler into a service.
-    $save_handler = new SessionHandler($this->requestStack, $this->connection);
+    $save_handler = new SessionHandler($this, $this->requestStack, $this->connection);
     $write_check_handler = new WriteCheckSessionHandler($save_handler);
-    $this->writeSafeHandler = new WriteSafeSessionHandler($write_check_handler);
+    $this->setSaveHandler($write_check_handler);
 
-    parent::__construct($options, $this->writeSafeHandler, $metadata_bag);
+    parent::__construct($options, $write_check_handler, $metadata_bag);
 
     // @todo When not using the Symfony Session object, the list of bags in the
     //   NativeSessionStorage will remain uninitialized. This will lead to
@@ -164,7 +165,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
    *   TRUE if the session is started.
    */
   protected function startNow() {
-    if ($this->isCli()) {
+    if (!$this->isEnabled() || $this->isCli()) {
       return FALSE;
     }
 
@@ -189,7 +190,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
   public function save() {
     global $user;
 
-    if ($this->isCli()) {
+    if (!$this->isEnabled() || $this->isCli()) {
       // We don't have anything to do if we are not allowed to save the session.
       return;
     }
@@ -221,7 +222,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
     global $user;
 
     // Nothing to do if we are not allowed to change the session.
-    if ($this->isCli()) {
+    if (!$this->isEnabled() || $this->isCli()) {
       return;
     }
 
@@ -261,7 +262,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
    */
   public function delete($uid) {
     // Nothing to do if we are not allowed to change the session.
-    if (!$this->writeSafeHandler->isSessionWritable() || $this->isCli()) {
+    if (!$this->isEnabled() || $this->isCli()) {
       return;
     }
     $this->connection->delete('sessions')
@@ -273,14 +274,14 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
    * {@inheritdoc}
    */
   public function isEnabled() {
-    return $this->writeSafeHandler->isSessionWritable();
+    return static::$enabled;
   }
 
   /**
    * {@inheritdoc}
    */
   public function disable() {
-    $this->writeSafeHandler->setSessionWritable(FALSE);
+    static::$enabled = FALSE;
     return $this;
   }
 
@@ -288,7 +289,7 @@ class SessionManager extends NativeSessionStorage implements SessionManagerInter
    * {@inheritdoc}
    */
   public function enable() {
-    $this->writeSafeHandler->setSessionWritable(TRUE);
+    static::$enabled = TRUE;
     return $this;
   }
 

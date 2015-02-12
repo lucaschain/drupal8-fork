@@ -11,8 +11,6 @@
  *   - attributes: Remaining HTML attributes for the element.
  *   - content: HTML classes to apply to each header cell, indexed by
  *   the header's key.
- *   - default_classes: A flag indicating whether default classes should be
- *     used.
  * - caption_needed: Is the caption tag needed.
  * - caption: The caption for this table.
  * - accessibility_description: Extended description for the table details.
@@ -22,26 +20,13 @@
  *   - columns: Row column items. Columns are keyed by column number.
  *     - attributes: HTML classes to apply to each column.
  *     - content: The column content.
- *   - default_classes: A flag indicating whether default classes should be
- *     used.
- * - responsive: A flag indicating whether table is responsive.
- * - sticky: A flag indicating whether table header is sticky.
  *
  * @see template_preprocess_views_view_table()
  *
  * @ingroup themeable
  */
 #}
-{%
-  set classes = [
-    'views-table',
-    'views-view-table',
-    'cols-' ~ header|length,
-    responsive ? 'responsive-enabled',
-    sticky ? 'sticky-enabled',
-  ]
-%}
-<table{{ attributes.addClass(classes) }}>
+<table{{ attributes }}>
   {% if caption_needed %}
     <caption>
     {% if caption %}
@@ -64,16 +49,8 @@
   {% if header %}
     <thead>
       <tr>
-        {% for key, column in header %}
-          {% if column.default_classes %}
-            {%
-              set column_classes = [
-                'views-field',
-                'views-field-' ~ fields[key],
-              ]
-            %}
-          {% endif %}
-          <th{{ column.attributes.addClass(column_classes) }} scope="col">
+        {% for column in header %}
+          <th{{ column.attributes }} scope="col">
             {{ column.content }}
           </th>
         {% endfor %}
@@ -83,18 +60,8 @@
   <tbody>
     {% for row in rows %}
       <tr{{ row.attributes }}>
-        {% for key, column in row.columns %}
-          {% if column.default_classes %}
-            {%
-              set column_classes = [
-                'views-field'
-              ]
-            %}
-            {% for field in column.fields %}
-              {% set column_classes = column_classes|merge(['views-field-' ~ field]) %}
-            {% endfor %}
-          {% endif %}
-          <td{{ column.attributes.addClass(column_classes) }}>
+        {% for column in row.columns %}
+          <td{{ column.attributes }}>
             {{ column.content }}
           </td>
         {% endfor %}

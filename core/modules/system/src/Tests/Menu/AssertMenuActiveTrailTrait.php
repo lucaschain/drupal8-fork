@@ -7,8 +7,6 @@
 
 namespace Drupal\system\Tests\Menu;
 
-use Drupal\Core\Url;
-
 /**
  * Provides test assertions for verifying the active menu trail.
  */
@@ -37,7 +35,7 @@ trait AssertMenuActiveTrailTrait {
         $part_xpath .= 'li[contains(@class, :class)]/a[contains(@href, :href) and contains(text(), :title)]';
         $part_args = array(
           ':class' => 'active-trail',
-          ':href' => Url::fromUri('base:' . $link_path)->toString(),
+          ':href' => _url($link_path),
           ':title' => $link_title,
         );
         $xpath .= $this->buildXPathQuery($part_xpath, $part_args);
@@ -57,7 +55,7 @@ trait AssertMenuActiveTrailTrait {
     $args = array(
       ':class-trail' => 'active-trail',
       ':class-active' => 'active',
-      ':href' => Url::fromUri('base:' . $active_link_path)->toString(),
+      ':href' => _url($active_link_path),
       ':title' => $active_link_title,
     );
     $elements = $this->xpath($xpath, $args);

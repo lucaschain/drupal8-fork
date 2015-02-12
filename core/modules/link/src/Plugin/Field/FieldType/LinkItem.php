@@ -8,14 +8,12 @@
 namespace Drupal\link\Plugin\Field\FieldType;
 
 use Drupal\Component\Utility\Random;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\MapDataDefinition;
-use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 
 /**
@@ -46,7 +44,9 @@ class LinkItem extends FieldItemBase implements LinkItemInterface {
    * {@inheritdoc}
    */
   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
-    $properties['uri'] = DataDefinition::create('uri')
+    // @todo Change the type from 'string' to 'uri':
+    //   https://www.drupal.org/node/2412509.
+    $properties['uri'] = DataDefinition::create('string')
       ->setLabel(t('URI'));
 
     $properties['title'] = DataDefinition::create('string')
@@ -80,9 +80,6 @@ class LinkItem extends FieldItemBase implements LinkItemInterface {
           'size' => 'big',
           'serialize' => TRUE,
         ),
-      ),
-      'indexes' => array(
-        'uri' => array(array('uri', 30)),
       ),
     );
   }
@@ -156,7 +153,9 @@ class LinkItem extends FieldItemBase implements LinkItemInterface {
    * {@inheritdoc}
    */
   public function isExternal() {
-    return $this->getUrl()->isExternal();
+    // External links don't resolve to a route.
+    $url = \Drupal::pathValidator()->getUrlIfValid($this->uri);
+    return $url->isExternal();
   }
 
   /**
@@ -167,11 +166,14 @@ class LinkItem extends FieldItemBase implements LinkItemInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Gets the URL object.
+   *
+   * @return \Drupal\Core\Url
    */
   public function getUrl() {
-    return Url::fromUri($this->uri);
+    return \Drupal::pathValidator()->getUrlIfValidWithoutAccessCheck($this->uri);
   }
+
 
   /**
    * {@inheritdoc}

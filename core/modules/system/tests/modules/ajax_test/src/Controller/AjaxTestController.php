@@ -8,11 +8,8 @@
 namespace Drupal\ajax_test\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\AlertCommand;
-use Drupal\Core\Ajax\CloseDialogCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Url;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides content for dialog tests.
@@ -20,31 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 class AjaxTestController {
 
   /**
-   * Example content for dialog testing.
-   *
-   * @return array
-   *   Renderable array of AJAX dialog contents.
+   * Returns example content for dialog testing.
    */
-  public static function dialogContents() {
-    // This is a regular render array; the keys do not have special meaning.
-    $content = array(
-      '#title' => 'AJAX Dialog contents',
-      'content' => array(
-        '#markup' => 'Example message',
-      ),
-      'cancel' => array(
-        '#type' => 'link',
-        '#title' => 'Cancel',
-        '#url' => Url::fromRoute('<front>'),
-        '#attributes' => array(
-          // This is a special class to which JavaScript assigns dialog closing
-          // behavior.
-          'class' => array('dialog-cancel'),
-        ),
-      ),
-    );
-
-    return $content;
+  public function dialogContents() {
+    // Re-use the utility method that returns the example content.
+    return ajax_test_dialog_contents();
   }
 
   /**
@@ -83,27 +60,14 @@ class AjaxTestController {
   }
 
   /**
-   * Returns an AjaxResponse with alert command.
-   *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The current request object.
-   *
-   * @return \Drupal\Core\Ajax\AjaxResponse
-   *   The JSON response object.
+   * @todo Remove ajax_test_error().
    */
-  public function renderError(Request $request) {
-    $message = '';
-    $query = $request->query;
-    if ($query->has('message')) {
-      $message = $query->get('message');
-    }
-    $response = new AjaxResponse();
-    $response->addCommand(new AlertCommand($message));
-    return $response;
+  public function renderError() {
+    return ajax_test_error();
   }
 
   /**
-   * Returns a render array of form elements and links for dialog.
+   * @todo Remove ajax_test_dialog().
    */
   public function dialog() {
     // Add two wrapper elements for testing non-modal dialogs. Modal dialogs use
@@ -196,15 +160,10 @@ class AjaxTestController {
   }
 
   /**
-   * Returns an AjaxResponse with command to close dialog.
-   *
-   * @return \Drupal\Core\Ajax\AjaxResponse
-   *   The JSON response object.
+   * @todo Remove ajax_test_dialog_close().
    */
   public function dialogClose() {
-    $response = new AjaxResponse();
-    $response->addCommand(new CloseDialogCommand('#ajax-test-dialog-wrapper-1'));
-    return $response;
+    return ajax_test_dialog_close();
   }
 
 }

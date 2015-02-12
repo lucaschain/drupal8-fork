@@ -13,13 +13,6 @@ namespace Drupal\user\Tests\Views;
 abstract class AccessTestBase extends UserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = array('block');
-
-  /**
    * Contains a user object that has no special permissions.
    *
    * @var \Drupal\user\UserInterface
@@ -47,12 +40,8 @@ abstract class AccessTestBase extends UserTestBase {
    */
   protected $normalRole;
 
-  /**
-   * {@inheritdoc}
-   */
   protected function setUp() {
     parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
 
     $this->enableViewsTestModule();
 

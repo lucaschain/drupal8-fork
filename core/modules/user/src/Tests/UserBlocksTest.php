@@ -24,7 +24,7 @@ class UserBlocksTest extends WebTestBase {
   public static $modules = array('block', 'views');
 
   /**
-   * A user with the 'administer blocks' permission.
+   * The admin user used in this test.
    *
    * @var \Drupal\user\UserInterface
    */

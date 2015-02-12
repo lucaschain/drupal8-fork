@@ -27,18 +27,12 @@ class Link extends FieldPluginBase {
     return FALSE;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['text'] = array('default' => '');
     return $options;
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     $form['text'] = array(
       '#type' => 'textfield',
@@ -82,7 +76,7 @@ class Link extends FieldPluginBase {
   protected function renderLink($node, ResultRow $values) {
     if ($node->access('view')) {
       $this->options['alter']['make_link'] = TRUE;
-      $this->options['alter']['url'] = $node->urlInfo();
+      $this->options['alter']['path'] = 'node/' . $node->id();
       $text = !empty($this->options['text']) ? $this->options['text'] : $this->t('View');
       return $text;
     }

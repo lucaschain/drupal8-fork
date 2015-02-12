@@ -316,7 +316,7 @@ class BulkForm extends FieldPluginBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Overrides \Drupal\views\Plugin\views\Plugin\field\FieldPluginBase::query().
    */
   public function query() {
   }

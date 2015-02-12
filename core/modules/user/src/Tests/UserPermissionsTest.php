@@ -17,28 +17,16 @@ use Drupal\user\RoleStorage;
  * @group user
  */
 class UserPermissionsTest extends WebTestBase {
-
-  /**
-   * User with admin privileges.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $adminUser;
-
-  /**
-   * User's role ID.
-   *
-   * @var string
-   */
+  protected $admin_user;
   protected $rid;
 
   protected function setUp() {
     parent::setUp();
 
-    $this->adminUser = $this->drupalCreateUser(array('administer permissions', 'access user profiles', 'administer site configuration', 'administer modules', 'administer account settings'));
+    $this->admin_user = $this->drupalCreateUser(array('administer permissions', 'access user profiles', 'administer site configuration', 'administer modules', 'administer account settings'));
 
     // Find the new role ID.
-    $all_rids = $this->adminUser->getRoles();
+    $all_rids = $this->admin_user->getRoles();
     unset($all_rids[array_search(DRUPAL_AUTHENTICATED_RID, $all_rids)]);
     $this->rid = reset($all_rids);
   }
@@ -49,9 +37,9 @@ class UserPermissionsTest extends WebTestBase {
   function testUserPermissionChanges() {
     $permissions_hash_generator = $this->container->get('user.permissions_hash');
 
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $rid = $this->rid;
-    $account = $this->adminUser;
+    $account = $this->admin_user;
     $previous_permissions_hash = $permissions_hash_generator->generate($account);
     $this->assertIdentical($previous_permissions_hash, $permissions_hash_generator->generate($this->loggedInUser));
 
@@ -86,7 +74,7 @@ class UserPermissionsTest extends WebTestBase {
    * Test assigning of permissions for the administrator role.
    */
   function testAdministratorRole() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->admin_user);
     $this->drupalGet('admin/config/people/accounts');
 
     // Verify that the administration role is none by default.
@@ -101,7 +89,7 @@ class UserPermissionsTest extends WebTestBase {
     // permission is assigned by default.
     \Drupal::service('module_installer')->install(array('aggregator'));
 
-    $this->assertTrue($this->adminUser->hasPermission('administer news feeds'), 'The permission was automatically assigned to the administrator role');
+    $this->assertTrue($this->admin_user->hasPermission('administer news feeds'), 'The permission was automatically assigned to the administrator role');
   }
 
   /**
@@ -111,7 +99,7 @@ class UserPermissionsTest extends WebTestBase {
     $permissions_hash_generator = $this->container->get('user.permissions_hash');
 
     $rid = $this->rid;
-    $account = $this->adminUser;
+    $account = $this->admin_user;
     $previous_permissions_hash = $permissions_hash_generator->generate($account);
 
     // Verify current permissions.

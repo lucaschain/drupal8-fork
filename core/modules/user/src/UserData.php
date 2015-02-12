@@ -106,15 +106,14 @@ class UserData implements UserDataInterface {
    */
   public function delete($module = NULL, $uid = NULL, $name = NULL) {
     $query = $this->connection->delete('users_data');
-    // Cast scalars to array so we can consistently use an IN condition.
     if (isset($module)) {
-      $query->condition('module', (array) $module, 'IN');
+      $query->condition('module', $module);
     }
     if (isset($uid)) {
-      $query->condition('uid', (array) $uid, 'IN');
+      $query->condition('uid', $uid);
     }
     if (isset($name)) {
-      $query->condition('name', (array) $name, 'IN');
+      $query->condition('name', $name);
     }
     $query->execute();
   }

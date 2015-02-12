@@ -20,9 +20,6 @@ use Drupal\views\ResultRow;
  */
 class Serialized extends FieldPluginBase {
 
-  /**
-   * {@inheritdoc}
-   */
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['format'] = array('default' => 'unserialized');
@@ -30,9 +27,7 @@ class Serialized extends FieldPluginBase {
     return $options;
   }
 
-  /**
-   * {@inheritdoc}
-   */
+
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -59,9 +54,6 @@ class Serialized extends FieldPluginBase {
     );
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function validateOptionsForm(&$form, FormStateInterface $form_state) {
     // Require a key if the format is key.
     if ($form_state->getValue(array('options', 'format')) == 'key' && $form_state->getValue(array('options', 'key')) == '') {

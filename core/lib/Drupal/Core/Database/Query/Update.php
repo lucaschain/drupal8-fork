@@ -83,7 +83,7 @@ class Update extends Query implements ConditionInterface {
   /**
    * Implements Drupal\Core\Database\Query\ConditionInterface::condition().
    */
-  public function condition($field, $value = NULL, $operator = '=') {
+  public function condition($field, $value = NULL, $operator = NULL) {
     $this->condition->condition($field, $value, $operator);
     return $this;
   }

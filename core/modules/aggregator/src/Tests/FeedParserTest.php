@@ -7,7 +7,6 @@
 
 namespace Drupal\aggregator\Tests;
 
-use Drupal\Core\Url;
 use Zend\Feed\Reader\Reader;
 
 /**
@@ -77,11 +76,12 @@ class FeedParserTest extends AggregatorTestBase {
   }
 
   /**
-   * Tests that a redirected feed is tracked to its target.
+   * Tests error handling when an invalid feed is added.
    */
   function testRedirectFeed() {
-    $redirect_url = Url::fromRoute('aggregator_test.redirect')->setAbsolute()->toString();
-    $feed = entity_create('aggregator_feed', array('url' => $redirect_url, 'title' => $this->randomMachineName()));
+    // Simulate a typo in the URL to force a curl exception.
+    $invalid_url = _url('aggregator/redirect', array('absolute' => TRUE));
+    $feed = entity_create('aggregator_feed', array('url' => $invalid_url, 'title' => $this->randomMachineName()));
     $feed->save();
     $feed->refreshItems();
 

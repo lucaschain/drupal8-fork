@@ -22,18 +22,17 @@ class ManageDisplayTest extends WebTestBase {
   use FieldUiTestTrait;
 
   /**
-   * Modules to install.
+   * Modules to enable.
    *
    * @var array
    */
-  public static $modules = array('node', 'field_ui', 'taxonomy', 'search', 'field_test', 'field_third_party_test', 'block');
+  public static $modules = array('node', 'field_ui', 'taxonomy', 'search', 'field_test', 'field_third_party_test');
 
   /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-    $this->drupalPlaceBlock('system_breadcrumb_block');
 
     // Create a test user.
     $admin_user = $this->drupalCreateUser(array('access content', 'administer content types', 'administer node fields', 'administer node form display', 'administer node display', 'administer taxonomy', 'administer taxonomy_term fields', 'administer taxonomy_term display', 'administer users', 'administer account settings', 'administer user display', 'bypass node access'));

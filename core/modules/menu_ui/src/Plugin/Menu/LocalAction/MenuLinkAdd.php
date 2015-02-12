@@ -22,7 +22,9 @@ class MenuLinkAdd extends LocalActionDefault {
   public function getOptions(RouteMatchInterface $route_match) {
     $options = parent::getOptions($route_match);
     // Append the current path as destination to the query string.
-    $options['query']['destination'] = drupal_get_destination()['destination'];
+    if ($route_name = $route_match->getRouteName()) {
+      $options['query']['destination'] = Url::fromRoute($route_name, $route_match->getRawParameters()->all())->toString();
+    }
     return $options;
   }
 

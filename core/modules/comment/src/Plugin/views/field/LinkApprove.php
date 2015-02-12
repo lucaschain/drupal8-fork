@@ -9,7 +9,6 @@ namespace Drupal\comment\Plugin\views\field;
 
 use Drupal\comment\CommentInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
 use Drupal\views\ResultRow;
 
 /**
@@ -52,8 +51,8 @@ class LinkApprove extends Link {
     $comment = $this->get_entity($values);
 
     $this->options['alter']['make_link'] = TRUE;
-    $this->options['alter']['url'] = Url::fromRoute('comment.approve', ['comment' => $comment->id()]);
-    $this->options['alter']['query'] = drupal_get_destination() + array('token' => \Drupal::csrfToken()->get($this->options['alter']['url']->toString()));
+    $this->options['alter']['path'] = "comment/" . $comment->id() . "/approve";
+    $this->options['alter']['query'] = drupal_get_destination() + array('token' => \Drupal::csrfToken()->get($this->options['alter']['path']));
 
     return $text;
   }
